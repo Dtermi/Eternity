@@ -21,8 +21,8 @@
       <a class="nav-a" href="rules.html">Правила</a>
       <a class="nav-a" href="wiki.html">Вики</a>
     </div>
-    <div class="nav-right" id="nav-right-auth">
-      <!-- populated by auth.js -->
+    <div class="nav-right">
+      <a class="nav-pill" href="shop.html">Магазин →</a>
     </div>
   </div>
 </nav>
@@ -88,14 +88,7 @@
 
 <!-- CONTENT -->
 <main class="content">
-  <div class="stats">
-    <div class="stat"><strong>1.20+</strong><span>Версия</span></div>
-    <div class="stat"><strong>24/7</strong><span>Онлайн</span></div>
-    <div class="stat"><strong>PvE</strong><span>Режим</span></div>
-    <div class="stat"><strong>RU</strong><span>Комьюнити</span></div>
-  </div>
-
-  <div class="sh"><h2>Главные разделы</h2></div>
+<div class="sh"><h2>Главные разделы</h2></div>
   <div class="nav-links-list">
     <a class="nav-link-row" href="about.html">
       <div class="nlr-left">
@@ -150,20 +143,6 @@ function copyIp(){
     setTimeout(()=>t.classList.remove('show'),2000);
   });
 }
-</script>
-<script>
-(function(){
-  var stored=localStorage.getItem('eternity_user'),user=null;
-  try{if(stored)user=JSON.parse(stored);}catch(e){}
-  var nr=document.getElementById('nav-right-auth');
-  if(user){
-    var initial=(user.first_name||'U')[0];
-    var av=user.photo_url?'<img class="nav-auth-avatar" src="'+user.photo_url+'" alt="">':'<div class="nav-auth-avatar-placeholder">'+initial+'</div>';
-    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html">'+av+'<span>'+user.first_name+'</span></a>';
-  }else{
-    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Войти</span></a>';
-  }
-})();
 </script>
 <script>
 (function(){

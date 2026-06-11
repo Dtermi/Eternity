@@ -459,20 +459,5 @@ searchInput.addEventListener('input', () => {
   empty.style.display = visible === 0 ? 'block' : 'none';
 });
 </script>
-<script>
-(function(){
-  var stored=localStorage.getItem('eternity_user'),user=null;
-  try{if(stored)user=JSON.parse(stored);}catch(e){}
-  var nr=document.getElementById('nav-right-auth');
-  if(!nr)return;
-  if(user){
-    var initial=(user.first_name||'U')[0];
-    var av=user.photo_url?'<img class="nav-auth-avatar" src="'+user.photo_url+'" alt="">':'<div class="nav-auth-avatar-placeholder">'+initial+'</div>';
-    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html">'+av+'<span>'+user.first_name+'</span></a>';
-  }else{
-    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Войти</span></a>';
-  }
-})();
-</script>
 </body>
 </html>
