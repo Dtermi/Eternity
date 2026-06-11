@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ETERNITY — Магазин</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="wrap">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="logo.png" alt="">ETERNITY</a>
+    <div class="nav-links">
+      <a class="nav-a" href="index.html">Главная</a>
+      <a class="nav-a" href="about.html">О сервере</a>
+      <a class="nav-a" href="rules.html">Правила</a>
+      <a class="nav-a" href="wiki.html">Вики</a>
+    </div>
+    <div class="nav-right" id="nav-right-auth">
+      <!-- populated by auth script -->
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-kicker">Магазин привилегий</div>
+    <h1>Магазин</h1>
+    <p class="page-lead">Выберите привилегию — она выдаётся автоматически сразу после оплаты через RCON + LuckPerms.</p>
+  </div>
+</section>
+
+<!-- LAYOUT -->
+<div class="layout">
+<div>
+
+  <!-- Rank cards -->
+  <div class="sh"><h2>Выберите привилегию</h2></div>
+  <div class="rank-grid">
+
+    <!-- SPONSOR -->
+    <div class="rcard sponsor" data-priv="sponsor" data-base="99" onclick="pickPriv(this)">
+      <div class="rc-strip"></div>
+      <div class="rc-img"></div>
+      <div class="rc-body">
+        <div class="rc-tag">Sponsor</div>
+        <div class="rc-name">Спонсор</div>
+        <div class="rc-price">99 ₽ <em>/ мес</em></div>
+      </div>
+      <div class="rc-tick">✓</div>
+      <div class="rc-tooltip">
+        <div class="tooltip-title">Спонсор</div>
+        <ul class="tooltip-list">
+          <li>Цветной ник в чате</li>
+          <li>Префикс [Спонсор]</li>
+          <li>Кит раз в 7 дней</li>
+          <li>Приоритетный вход</li>
+        </ul>
+        <button class="tooltip-select" onclick="pickPrivFromTooltip(event,'sponsor',99)">Выбрать</button>
+      </div>
+    </div>
+
+    <!-- ELITE -->
+    <div class="rcard elite" data-priv="elite" data-base="199" onclick="pickPriv(this)">
+      <div class="rc-strip"></div>
+      <div class="rc-img"></div>
+      <div class="rc-body">
+        <div class="rc-tag">Elite</div>
+        <div class="rc-name">Элита</div>
+        <div class="rc-price">199 ₽ <em>/ мес</em></div>
+      </div>
+      <div class="rc-tick">✓</div>
+      <div class="rc-tooltip">
+        <div class="tooltip-title">Элита</div>
+        <ul class="tooltip-list">
+          <li>Всё из Спонсора</li>
+          <li>Кит раз в 3 дня</li>
+          <li>/nick, /hat</li>
+          <li>Частный дом (+5 слотов)</li>
+        </ul>
+        <button class="tooltip-select" onclick="pickPrivFromTooltip(event,'elite',199)">Выбрать</button>
+      </div>
+    </div>
+
+    <!-- HEAD -->
+    <div class="rcard head" data-priv="head" data-base="349" onclick="pickPriv(this)">
+      <div class="rc-strip"></div>
+      <div class="rc-img"></div>
+      <div class="rc-body">
+        <div class="rc-tag">Head</div>
+        <div class="rc-name">Глава</div>
+        <div class="rc-price">349 ₽ <em>/ мес</em></div>
+      </div>
+      <div class="rc-tick">✓</div>
+      <div class="rc-tooltip">
+        <div class="tooltip-title">Глава</div>
+        <ul class="tooltip-list">
+          <li>Всё из Элиты</li>
+          <li>Полёт в лобби /fly</li>
+          <li>Кит каждый день</li>
+          <li>/feed, /heal</li>
+          <li>Доступ к приватным зонам</li>
+        </ul>
+        <button class="tooltip-select" onclick="pickPrivFromTooltip(event,'head',349)">Выбрать</button>
+      </div>
+    </div>
+
+    <!-- CHAMPION (was HERO — fixed class conflict with .hero section) -->
+    <div class="rcard champion" data-priv="champion" data-base="599" onclick="pickPriv(this)">
+      <div class="rc-strip"></div>
+      <div class="rc-img"></div>
+      <div class="rc-body">
+        <div class="rc-tag">Hero</div>
+        <div class="rc-name">Герой</div>
+        <div class="rc-price">599 ₽ <em>/ мес</em></div>
+      </div>
+      <div class="rc-tick">✓</div>
+      <div class="rc-tooltip">
+        <div class="tooltip-title">Герой</div>
+        <ul class="tooltip-list">
+          <li>Все привилегии Главы</li>
+          <li>/god, /fly везде</li>
+          <li>Золотой префикс [Герой]</li>
+          <li>Уникальный скин частиц</li>
+          <li>Личный варп /warp</li>
+        </ul>
+        <button class="tooltip-select" onclick="pickPrivFromTooltip(event,'champion',599)">Выбрать</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Duration -->
+  <div class="sh"><h2>Срок действия</h2></div>
+  <div class="dgrid">
+    <div class="dbtn" data-days="30" data-mult="1.0" onclick="pickDur(this)">
+      <span class="dnum">30</span><span class="dlabel">дней</span>
+    </div>
+    <div class="dbtn hs" data-days="60" data-mult="1.75" onclick="pickDur(this)">
+      <div class="dsave">−12%</div>
+      <span class="dnum">60</span><span class="dlabel">дней</span>
+    </div>
+    <div class="dbtn hs" data-days="90" data-mult="2.4" onclick="pickDur(this)">
+      <div class="dsave">−20%</div>
+      <span class="dnum">90</span><span class="dlabel">дней</span>
+    </div>
+    <div class="dbtn hs" data-days="180" data-mult="4.2" onclick="pickDur(this)">
+      <div class="dsave">−30%</div>
+      <span class="dnum">180</span><span class="dlabel">дней</span>
+    </div>
+  </div>
+
+  <!-- Nick -->
+  <div class="sh"><h2>Ваш никнейм</h2></div>
+  <div style="margin-bottom:8px">
+    <label class="flabel" for="nick">Никнейм в Minecraft</label>
+    <input class="ninput" type="text" id="nick" placeholder="Например: Steve_2007" maxlength="16" autocomplete="off" spellcheck="false"/>
+  </div>
+
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="scard">
+    <div class="scard-head">Ваш заказ</div>
+    <div class="scard-body">
+      <div id="sempty" class="sempty">Ничего не выбрано</div>
+      <div id="srows" style="display:none">
+        <div class="srow"><span class="k">Ник</span><span class="v" id="sn">—</span></div>
+        <div class="srow"><span class="k">Привилегия</span><span class="v" id="sp">—</span></div>
+        <div class="srow"><span class="k">Срок</span><span class="v" id="sd">—</span></div>
+      </div>
+      <div class="price-block">
+        <span class="price-lbl">Итого</span>
+        <span class="price-num" id="sprice">— ₽</span>
+      </div>
+      <button class="paybtn" id="paybtn" disabled onclick="openModal()">Оплатить →</button>
+    </div>
+  </div>
+
+  <div class="scard">
+    <div class="trust-rows">
+      <div class="trow"><div class="ticon tg">✓</div>Выдача за ~5 секунд автоматически</div>
+      <div class="trow"><div class="ticon tg">✓</div>Снятие по истечении срока</div>
+      <div class="trow"><div class="ticon tg">✓</div>Защита от двойной оплаты</div>
+      <div class="trow"><div class="ticon tp">⚡</div>RCON + LuckPerms интеграция</div>
+    </div>
+  </div>
+</aside>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-logo">ETERNITY</div>
+      <div class="footer-links">
+        <a class="footer-link" href="about.html">О сервере</a>
+        <a class="footer-link" href="rules.html">Правила</a>
+        <a class="footer-link" href="wiki.html">Вики</a>
+        <a class="footer-link accent" href="#">Правила возврата</a>
+        <a class="footer-link accent" href="https://t.me/Eternity11q_bot" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Eternity &nbsp;·&nbsp; Не является официальным продуктом Mojang Synergies AB.</div>
+  </div>
+</footer>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="modal-icon">⚔</div>
+    <h2>Подтверждение заказа</h2>
+    <p id="mbody"></p>
+    <div class="modal-btns">
+      <button class="mbtn-c" onclick="closeModal()">Отмена</button>
+      <button class="mbtn-g" onclick="doRedirect()">Оплатить →</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+let sP=null,sB=null,sD=null,sM=null,pUrl='';
+
+const LABELS={sponsor:'Спонсор',elite:'Элита',head:'Глава',champion:'Герой'};
+
+document.getElementById('nick').addEventListener('input',upd);
+
+function nickOk(){return /^[a-zA-Z0-9_]{3,16}$/.test(document.getElementById('nick').value.trim())}
+
+function pickPriv(el){
+  document.querySelectorAll('.rcard').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  sP=el.dataset.priv; sB=+el.dataset.base; upd();
+}
+
+function pickPrivFromTooltip(e,priv,base){
+  e.stopPropagation();
+  document.querySelectorAll('.rcard').forEach(c=>c.classList.remove('sel'));
+  const card=document.querySelector(`.rcard[data-priv="${priv}"]`);
+  if(card)card.classList.add('sel');
+  sP=priv; sB=base; upd();
+}
+
+function pickDur(el){
+  document.querySelectorAll('.dbtn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on'); sD=+el.dataset.days; sM=+el.dataset.mult; upd();
+}
+
+function upd(){
+  const n=document.getElementById('nick').value.trim();
+  const any=sP||sD||n;
+  document.getElementById('sempty').style.display=any?'none':'block';
+  document.getElementById('srows').style.display=any?'block':'none';
+  document.getElementById('sn').textContent=n||'—';
+  document.getElementById('sp').textContent=sP?LABELS[sP]:'—';
+  document.getElementById('sd').textContent=sD?sD+' дней':'—';
+  document.getElementById('sprice').textContent=(sB&&sM)?Math.round(sB*sM).toLocaleString('ru')+' ₽':'— ₽';
+  document.getElementById('paybtn').disabled=!(nickOk()&&sP&&sD);
+}
+
+function openModal(){
+  const n=document.getElementById('nick').value.trim();
+  const price=Math.round(sB*sM);
+  const colors={sponsor:'#818cf8',elite:'#c084fc',head:'#38bdf8',champion:'#fbbf24'};
+  document.getElementById('mbody').innerHTML=
+    `Ник: <strong style="color:#fff">${n}</strong><br>`+
+    `Привилегия: <strong style="color:${colors[sP]}">${LABELS[sP]}</strong><br>`+
+    `Срок: <strong style="color:#fff">${sD} дней</strong><br><br>`+
+    `К оплате: <strong style="color:#fff;font-size:20px;font-family:'Cormorant Garamond',serif">${price.toLocaleString('ru')} ₽</strong>`;
+  pUrl=`https://www.donationalerts.com/r/YOUR_DA_USER?comment=${encodeURIComponent('MC:'+n+':'+sP+':'+sD+'d')}&sum=${price}`;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function doRedirect(){closeModal();window.open(pUrl,'_blank')}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+</script>
+<script>
+(function(){
+  var stored=localStorage.getItem('eternity_user'),user=null;
+  try{if(stored)user=JSON.parse(stored);}catch(e){}
+  var nr=document.getElementById('nav-right-auth');
+  if(!nr)return;
+  if(user){
+    var initial=(user.first_name||'U')[0];
+    var av=user.photo_url?'<img class="nav-auth-avatar" src="'+user.photo_url+'" alt="">':'<div class="nav-auth-avatar-placeholder">'+initial+'</div>';
+    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html">'+av+'<span>'+user.first_name+'</span></a>';
+  }else{
+    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Войти</span></a>';
+  }
+})();
+</script>
+<script>
+(function(){
+  document.addEventListener("click", function(e) {
+    var a = e.target.closest("a");
+    if (!a) return;
+    var href = a.getAttribute("href");
+    if (!href || href.startsWith("#") || href.startsWith("http") || href.startsWith("mailto") || a.target === "_blank") return;
+    e.preventDefault();
+    document.querySelector(".wrap").classList.add("page-transition-out");
+    setTimeout(function(){ window.location.href = href; }, 320);
+  });
+})();
+</script>
+</body>
+</html>

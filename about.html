@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ETERNITY — О сервере</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="wrap">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="logo.png" alt="">ETERNITY</a>
+    <div class="nav-links">
+      <a class="nav-a" href="index.html">Главная</a>
+      <a class="nav-a on" href="about.html">О сервере</a>
+      <a class="nav-a" href="rules.html">Правила</a>
+      <a class="nav-a" href="wiki.html">Вики</a>
+    </div>
+    <div class="nav-right" id="nav-right-auth">
+      <!-- populated by auth script -->
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-kicker">О проекте</div>
+    <h1>О сервере</h1>
+    <p class="page-lead">Добро пожаловать в раздел «О нас» — здесь ты узнаешь всё о проекте Eternity, его инфраструктуре и возможностях.</p>
+    <div class="page-actions">
+      <a class="btn-primary" href="https://t.me/Eternity11q_bot" target="_blank" rel="noopener">Вступить в сервер</a>
+      <a class="btn-ghost" href="rules.html">Правила</a>
+    </div>
+  </div>
+</section>
+
+<main class="content">
+
+  <!-- INTRO TEXT -->
+  <div class="sh"><h2>Приветствие</h2></div>
+  <p class="about-lead">
+    Дорогой посетитель сайта, приветствуем тебя в нашем разделе «О нас»! Здесь ты узнаешь много нового о нас и о нашем проекте.<br><br>
+    Наш сервер создан на ядре <strong>Purpur</strong>, совмещая форк Paper, Bukkit и Spigot — поэтому функционал наших плагинов очень гибок. В арсенале у нас от алкоголя до кастомных эмоций, которые вы выбираете сами! Также у нас красочное оформление и возможность сделать много своего: <strong>префиксы</strong> (требуется установка ресурс-пака), собственные картинки и кастомные пластинки.
+    Люди на нашем сервере приветливы, правила соблюдаются, а модерация усиляется с каждым днём для вашей комфортной игры.
+  </p>
+
+  <!-- FEATURE STRIP -->
+  <div class="sh"><h2>Особенности</h2></div>
+  <div class="about-features">
+    <div class="af-item">
+      <div class="af-title">Ядро Purpur</div>
+      <div class="af-desc">Форк Paper + Bukkit + Spigot — стабильность и гибкость плагинов</div>
+    </div>
+    <div class="af-item">
+      <div class="af-title">Кастомный контент</div>
+      <div class="af-desc">Алкоголь, эмоции, пластинки, картинки и уникальные префиксы</div>
+    </div>
+    <div class="af-item">
+      <div class="af-title">Ресурс-пак</div>
+      <div class="af-desc">Красочное оформление — установи RP для полного погружения</div>
+    </div>
+    <div class="af-item">
+      <div class="af-title">Комьюнити</div>
+      <div class="af-desc">Приветливые игроки и активная модерация 24/7</div>
+    </div>
+    <div class="af-item">
+      <div class="af-title">Экономика</div>
+      <div class="af-desc">Аукцион, рынок и другие постройки в разработке</div>
+    </div>
+    <div class="af-item">
+      <div class="af-title">Приватный сервер</div>
+      <div class="af-desc">Вступление по анкете — только своих</div>
+    </div>
+  </div>
+
+  <!-- BUILDS -->
+  <div class="sh"><h2>Инфраструктура спавна</h2></div>
+  <p style="font-size:16px;color:var(--txt2);line-height:1.75;margin-bottom:28px">
+    На нашем спавне сейчас идёт активная работа избранных строителей. Уже построено:
+  </p>
+
+  <!-- BUILDS TABS -->
+  <div class="btabs-wrap">
+    <div class="btabs-nav">
+      <button class="btab on" onclick="switchBuild(0,this)">🏛 Загс Касуми</button>
+      <button class="btab" onclick="switchBuild(1,this)">⛵ Гладкий Берег</button>
+      <button class="btab" onclick="switchBuild(2,this)">💣 Магазин пороха</button>
+    </div>
+
+    <div class="btabs-panels">
+
+      <!-- 0 -->
+      <div class="btab-panel active">
+        <div class="btab-text">
+          <div class="build-num">Постройка 01</div>
+          <div class="btab-title">Загс №1 им. Касуми</div>
+          <p class="btab-desc">Торжественное здание для заключения виртуальных союзов. Архитектура выполнена в элегантном стиле с зелёной подсветкой и открытой галереей второго этажа.</p>
+        </div>
+        <div class="btab-img-wrap">
+          <img src="build_zagz.png" alt="Загс №1 им. Касуми">
+        </div>
+      </div>
+
+      <!-- 1 -->
+      <div class="btab-panel">
+        <div class="btab-text">
+          <div class="build-num">Постройка 02</div>
+          <div class="btab-title">Рыбацкое место «Гладкий Берег»</div>
+          <p class="btab-desc">Уютный деревянный причал у воды с местами для рыбалки. Тёплая атмосфера, фонари и терраса над водой — идеальное место для отдыха.</p>
+        </div>
+        <div class="btab-img-wrap">
+          <img src="build_beach.png" alt="Гладкий Берег">
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="btab-panel">
+        <div class="btab-text">
+          <div class="build-num">Постройка 03</div>
+          <div class="btab-title">Магазин пороха</div>
+          <p class="btab-desc">Специализированный магазин взрывчатых материалов на спавне. Фотография появится в ближайшее время.</p>
+        </div>
+        <div class="btab-img-wrap btab-img-placeholder">
+          <span>📷</span>
+          <span style="font-size:13px;color:rgba(255,255,255,.35)">Фото скоро появится</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="display:none">
+
+    <!-- 1. ЗАГС -->
+    <div class="build-bg-card" style="background-image:url('build_zagz.png')">
+      <div class="build-bg-overlay"></div>
+      <div class="build-bg-content">
+        <div class="build-num">Постройка 01</div>
+        <div class="build-title">Загс №1 им. Касуми</div>
+        <div class="build-desc">Торжественное здание для заключения виртуальных союзов. Архитектура выполнена в элегантном стиле с зелёной подсветкой и открытой галереей второго этажа.</div>
+      </div>
+    </div>
+
+    <!-- 2. ПЛЯЖ -->
+    <div class="build-bg-card" style="background-image:url('build_beach.png')">
+      <div class="build-bg-overlay"></div>
+      <div class="build-bg-content right">
+        <div class="build-num">Постройка 02</div>
+        <div class="build-title">Рыбацкое место «Гладкий Берег»</div>
+        <div class="build-desc">Уютный деревянный причал у воды с местами для рыбалки. Тёплая атмосфера, фонари и терраса над водой — идеальное место для отдыха.</div>
+      </div>
+    </div>
+
+    <!-- 3. МАГАЗИН ПОРОХА — placeholder -->
+    <div class="build-bg-card build-bg-placeholder">
+      <div class="build-bg-overlay"></div>
+      <div class="build-bg-content">
+        <div class="build-num">Постройка 03</div>
+        <div class="build-title">Магазин пороха</div>
+        <div class="build-desc">Специализированный магазин взрывчатых материалов на спавне. Фотография появится в ближайшее время.</div>
+        <div style="margin-top:12px;font-size:13px;color:rgba(255,255,255,.35);letter-spacing:.08em">📷 Фото скоро появится</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COMING SOON -->
+  <div class="coming-builds">
+    <div class="coming-builds-title">В разработке</div>
+    <div class="coming-builds-list">
+      <span class="coming-tag">Аукцион</span>
+      <span class="coming-tag">Рынок</span>
+      <span class="coming-tag">Другие постройки</span>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-logo">ETERNITY</div>
+      <div class="footer-links">
+        <a class="footer-link" href="about.html">О сервере</a>
+        <a class="footer-link" href="rules.html">Правила</a>
+        <a class="footer-link" href="wiki.html">Вики</a>
+        <a class="footer-link" href="shop.html">Магазин</a>
+        <a class="footer-link accent" href="https://t.me/Eternity11q_bot" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Eternity &nbsp;·&nbsp; Не является официальным продуктом Mojang Synergies AB.</div>
+  </div>
+</footer>
+
+</div>
+<script>
+function switchBuild(idx, btn) {
+  document.querySelectorAll('.btab').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.btab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('on');
+  document.querySelectorAll('.btab-panel')[idx].classList.add('active');
+}
+</script>
+<script>
+(function(){
+  var stored=localStorage.getItem('eternity_user'),user=null;
+  try{if(stored)user=JSON.parse(stored);}catch(e){}
+  var nr=document.getElementById('nav-right-auth');
+  if(!nr)return;
+  if(user){
+    var initial=(user.first_name||'U')[0];
+    var av=user.photo_url?'<img class="nav-auth-avatar" src="'+user.photo_url+'" alt="">':'<div class="nav-auth-avatar-placeholder">'+initial+'</div>';
+    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html">'+av+'<span>'+user.first_name+'</span></a>';
+  }else{
+    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Войти</span></a>';
+  }
+})();
+</script>
+<script>
+(function(){
+  document.addEventListener("click", function(e) {
+    var a = e.target.closest("a");
+    if (!a) return;
+    var href = a.getAttribute("href");
+    if (!href || href.startsWith("#") || href.startsWith("http") || href.startsWith("mailto") || a.target === "_blank") return;
+    e.preventDefault();
+    document.querySelector(".wrap").classList.add("page-transition-out");
+    setTimeout(function(){ window.location.href = href; }, 320);
+  });
+})();
+</script>
+</body>
+</html>

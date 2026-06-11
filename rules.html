@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ETERNITY — Правила</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="wrap">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="logo.png" alt="">ETERNITY</a>
+    <div class="nav-links">
+      <a class="nav-a" href="index.html">Главная</a>
+      <a class="nav-a" href="about.html">О сервере</a>
+      <a class="nav-a on" href="rules.html">Правила</a>
+      <a class="nav-a" href="wiki.html">Вики</a>
+    </div>
+    <div class="nav-right" id="nav-right-auth">
+      <!-- populated by auth script -->
+    </div>
+  </div>
+</nav>
+
+<div class="rules-layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="rules-sidebar-left">
+    <div class="sidebar-title">Разделы</div>
+    <nav class="sidebar-nav">
+      <a href="rules.html" class="active">Правила</a>
+      <a href="wiki.html">Вики</a>
+      <a href="about.html">О сервере</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="rules-main">
+    <h1 class="rules-page-title">Правила Eternity</h1>
+
+    <div class="rules-notice">
+      <div class="rules-notice-icon">📋</div>
+      <p>Правила могут обновляться. При изменениях администрация оповестит участников. Незнание правил не освобождает от ответственности. Администратор вправе увеличить наказание по своему усмотрению.</p>
+    </div>
+
+    <!-- CHAT RULES -->
+    <section class="rules-section" id="chat">
+      <div class="rules-section-header">
+        <div class="rules-section-num">1</div>
+        <h2>Правила чата</h2>
+      </div>
+
+      <div class="rule-item" id="r11">
+        <div class="rule-item-num">1.1</div>
+        <div class="rule-item-body">
+          <h3>Оскорбления</h3>
+          <p>Запрещены оскорбления участников, администрации, религии, чужих вкусов и всего, что с этим связано.</p>
+          <div class="punishments-row"><span class="rule-punishment warn">Варн + мут от 30 минут</span></div>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r12">
+        <div class="rule-item-num">1.2</div>
+        <div class="rule-item-body">
+          <h3>Ссоры и конфликты</h3>
+          <p>Ссоры с участниками или администрацией запрещены. Каждый участник конфликта получает наказание.</p>
+          <div class="punishments-row"><span class="rule-punishment warn">Варн + мут от 1 часа</span></div>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r13">
+        <div class="rule-item-num">1.3</div>
+        <div class="rule-item-body">
+          <h3>Политика</h3>
+          <p>Запрещены разговоры о политике в негативном ключе и пропаганда политических идеологий (нацизм, фашизм, национализм, либерализм, коммунизм и т.д.).</p>
+          <div class="punishments-row">
+            <span class="rule-punishment warn">Варн + мут от 1 часа</span>
+            <span class="rule-punishment warn">Варн + мут от 5 часов (повторно)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r14">
+        <div class="rule-item-num">1.4</div>
+        <div class="rule-item-body">
+          <h3>Спам</h3>
+          <p>Запрещён спам и многократное использование команд. Спам — повторение одного сообщения более 3 раз.</p>
+          <div class="punishments-row"><span class="rule-punishment warn">Варн + мут от 1 часа</span></div>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r15">
+        <div class="rule-item-num">1.5</div>
+        <div class="rule-item-body">
+          <h3>Запрещённый контент</h3>
+          <p>Запрещена пропаганда наркотиков, алкоголя, курения, суицида, селфхарма, ксенофобии, расизма, экстремизма. Запрещены фото, видео, гифки и стикеры с намёками на 18+, шок-контент и подобное.</p>
+          <div class="punishments-row">
+            <span class="rule-punishment warn">Варн 3 недели + мут от 4 часов</span>
+            <span class="rule-punishment ban">Бан без возможности вернуться (повторно)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r16">
+        <div class="rule-item-num">1.6</div>
+        <div class="rule-item-body">
+          <h3>Реклама</h3>
+          <p>Запрещена публикация рекламных материалов без согласования с администрацией.</p>
+          <div class="punishments-row">
+            <span class="rule-punishment warn">Мут 30 минут</span>
+            <span class="rule-punishment warn">Варн + мут от 1 часа (повторно)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r17">
+        <div class="rule-item-num">1.7</div>
+        <div class="rule-item-body">
+          <h3>Деанон и ложная информация</h3>
+          <p>Запрещено распространение ложной информации о проекте, личных данных других участников, запугивание (deanon, dox, social engineering).</p>
+          <div class="punishments-row"><span class="rule-punishment ban">Бан навсегда</span></div>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r18">
+        <div class="rule-item-num">1.8</div>
+        <div class="rule-item-body">
+          <h3>Обсуждение администрации</h3>
+          <p>Запрещено обсуждение действий администрации в негативном ключе в общем чате.</p>
+          <div class="punishments-row"><span class="rule-punishment warn">Варн + мут 1 час</span></div>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r19">
+        <div class="rule-item-num">1.9</div>
+        <div class="rule-item-body">
+          <h3>Второй аккаунт</h3>
+          <p>Запрещено использование второго аккаунта для обхода наказания или нахождения в чате/на сервере.</p>
+          <div class="punishments-row"><span class="rule-punishment ban">Бан основного и твинк-аккаунта</span></div>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r20">
+        <div class="rule-item-num">2.0</div>
+        <div class="rule-item-body">
+          <h3>Уважение</h3>
+          <p>Запрещено оскорбление истории, культуры, людей и их увлечений в любом формате.</p>
+          <div class="punishments-row">
+            <span class="rule-punishment warn">Мут 30 минут</span>
+            <span class="rule-punishment warn">Варн 1 неделя + мут от 1 часа (повторно)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r21">
+        <div class="rule-item-num">2.1</div>
+        <div class="rule-item-body">
+          <h3>Угрозы участникам</h3>
+          <p>Запрещены любые намёки на нанесение ущерба другим участникам — как в чате, так и на сервере.</p>
+          <div class="punishments-row">
+            <span class="rule-punishment ban">Бан 1 день</span>
+            <span class="rule-punishment ban">Бан навсегда (повторно)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="rules-divider"></div>
+
+    <!-- SERVER RULES -->
+    <section class="rules-section" id="server">
+      <div class="rules-section-header">
+        <div class="rules-section-num">2</div>
+        <h2>Правила сервера</h2>
+      </div>
+
+      <div class="rule-item" id="r22">
+        <div class="rule-item-num">2.2</div>
+        <div class="rule-item-body">
+          <h3>Гриф и читы</h3>
+          <p>Строго запрещён любой гриф и использование читов.</p>
+          <div class="punishments-row">
+            <span class="rule-punishment ban">Бан 1 день</span>
+            <span class="rule-punishment ban">Бан навсегда (повторно)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r23">
+        <div class="rule-item-num">2.3</div>
+        <div class="rule-item-body">
+          <h3>Чужие постройки</h3>
+          <p>Запрещено ломать постройки других участников.</p>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r24">
+        <div class="rule-item-num">2.4</div>
+        <div class="rule-item-body">
+          <h3>Кража ресурсов</h3>
+          <p>Запрещено красть ресурсы у других участников.</p>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r25">
+        <div class="rule-item-num">2.5</div>
+        <div class="rule-item-body">
+          <h3>PvP и таргетинг</h3>
+          <p>Умышленное убийство (таргетинг) без согласия игрока запрещено. PvP разрешено только с обоюдного согласия или в специально отведённых местах.</p>
+          <p style="font-size:13px;color:var(--txt3);margin-top:4px">Таргетер — игрок, выбирающий в качестве цели одного конкретного игрока и умышленно его преследующий.</p>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r26">
+        <div class="rule-item-num">2.6</div>
+        <div class="rule-item-body">
+          <h3>Запрещённые моды</h3>
+          <p>Запрещены: freecam, replaymod, entity outliner, bedrock miner, все виды x-ray, jenny mod.</p>
+          <div class="punishments-row">
+            <span class="rule-punishment ban">Бан 1 день</span>
+            <span class="rule-punishment ban">Бан навсегда (повторно)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-item" id="r27">
+        <div class="rule-item-num">2.7</div>
+        <div class="rule-item-body">
+          <h3>Дюпы</h3>
+          <p>Запрещены дюпы любых предметов (TNT, нити, ковры и прочее).</p>
+          <div class="punishments-row">
+            <span class="rule-punishment ban">Бан 3 часа</span>
+            <span class="rule-punishment ban">Бан 2 дня (повторно)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="rules-divider"></div>
+
+    <!-- COMPLAINTS -->
+    <section class="rules-section" id="complaints">
+      <div class="rules-section-header">
+        <div class="rules-section-num">3</div>
+        <h2>Жалобы</h2>
+      </div>
+      <p style="font-size:16px;color:var(--txt2);line-height:1.8">Вы можете подать жалобу на участника. Формат:</p>
+      <p style="margin:14px 0 0;font-size:16px;color:var(--txt2)"><strong style="color:var(--txt)">Ситуация</strong> → <strong style="color:var(--txt)">Доказательства</strong> (фото или ссылки) → <strong style="color:var(--txt)">Комментарий</strong> (по желанию)</p>
+      <p style="margin-top:12px;font-size:15px;color:var(--txt2)">При подаче жалобы соблюдайте нейтральный тон и формулируйте мысли чётко.</p>
+    </section>
+
+  </main>
+
+  <!-- RIGHT SIDEBAR — TOC -->
+  <aside class="rules-sidebar-right">
+    <div class="sidebar-title">На этой странице</div>
+    <ul class="toc-list">
+      <li><a href="#chat">1. Правила чата</a></li>
+      <li style="padding-left:10px"><a href="#r11">1.1 Оскорбления</a></li>
+      <li style="padding-left:10px"><a href="#r12">1.2 Ссоры</a></li>
+      <li style="padding-left:10px"><a href="#r13">1.3 Политика</a></li>
+      <li style="padding-left:10px"><a href="#r14">1.4 Спам</a></li>
+      <li style="padding-left:10px"><a href="#r15">1.5 Контент</a></li>
+      <li style="padding-left:10px"><a href="#r16">1.6 Реклама</a></li>
+      <li style="padding-left:10px"><a href="#r17">1.7 Деанон</a></li>
+      <li style="padding-left:10px"><a href="#r18">1.8 Админы</a></li>
+      <li style="padding-left:10px"><a href="#r19">1.9 Твинки</a></li>
+      <li><a href="#server">2. Правила сервера</a></li>
+      <li style="padding-left:10px"><a href="#r22">2.2 Гриф/читы</a></li>
+      <li style="padding-left:10px"><a href="#r25">2.5 PvP</a></li>
+      <li style="padding-left:10px"><a href="#r26">2.6 Моды</a></li>
+      <li style="padding-left:10px"><a href="#r27">2.7 Дюпы</a></li>
+      <li><a href="#complaints">3. Жалобы</a></li>
+    </ul>
+  </aside>
+
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-logo">ETERNITY</div>
+      <div class="footer-links">
+        <a class="footer-link" href="about.html">О сервере</a>
+        <a class="footer-link" href="rules.html">Правила</a>
+        <a class="footer-link" href="wiki.html">Вики</a>
+        <a class="footer-link" href="shop.html">Магазин</a>
+        <a class="footer-link accent" href="https://t.me/Eternity11q_bot" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Eternity &nbsp;·&nbsp; Не является официальным продуктом Mojang Synergies AB.</div>
+  </div>
+</footer>
+
+</div>
+<script>
+(function(){
+  var stored=localStorage.getItem('eternity_user'),user=null;
+  try{if(stored)user=JSON.parse(stored);}catch(e){}
+  var nr=document.getElementById('nav-right-auth');
+  if(!nr)return;
+  if(user){
+    var initial=(user.first_name||'U')[0];
+    var av=user.photo_url?'<img class="nav-auth-avatar" src="'+user.photo_url+'" alt="">':'<div class="nav-auth-avatar-placeholder">'+initial+'</div>';
+    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html">'+av+'<span>'+user.first_name+'</span></a>';
+  }else{
+    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Войти</span></a>';
+  }
+})();
+</script>
+<script>
+(function(){
+  document.addEventListener("click", function(e) {
+    var a = e.target.closest("a");
+    if (!a) return;
+    var href = a.getAttribute("href");
+    if (!href || href.startsWith("#") || href.startsWith("http") || href.startsWith("mailto") || a.target === "_blank") return;
+    e.preventDefault();
+    document.querySelector(".wrap").classList.add("page-transition-out");
+    setTimeout(function(){ window.location.href = href; }, 320);
+  });
+})();
+</script>
+</body>
+</html>

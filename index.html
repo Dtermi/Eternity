@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ETERNITY — Главная</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="wrap">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="logo.png" alt="">ETERNITY</a>
+    <div class="nav-links">
+      <a class="nav-a on" href="index.html">Главная</a>
+      <a class="nav-a" href="about.html">О сервере</a>
+      <a class="nav-a" href="rules.html">Правила</a>
+      <a class="nav-a" href="wiki.html">Вики</a>
+    </div>
+    <div class="nav-right" id="nav-right-auth">
+      <!-- populated by auth.js -->
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="site-hero">
+  <div class="site-hero-inner">
+    <div class="hero-season">Сезон открыт</div>
+    <h1>ETERNITY</h1>
+    <p class="hero-tagline">Minecraft Server · PvE · 1.20+</p>
+    <p class="hero-desc">Добро пожаловать — место, где строят, исследуют и общаются. Уютный приватный сервер с хорошей атмосферой и активным комьюнити.</p>
+    <div class="hero-cta">
+      <a class="btn-primary" href="#how-to-join">Как попасть на сервер</a>
+      <a class="btn-ghost" href="about.html">О сервере</a>
+    </div>
+    <div class="ip-block" onclick="copyIp()" title="Нажмите, чтобы скопировать">
+      <span class="ip-label">IP</span>
+      <span class="ip-value" id="ip-val">ip-213-152-43-62.joinserver.xyz:25952</span>
+      <span class="ip-copy" id="ip-copy-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO JOIN -->
+<section class="steps-section" id="how-to-join">
+  <div class="steps-inner">
+    <div class="section-label">Начало игры</div>
+    <div class="section-title">Как попасть на сервер?</div>
+    <div class="steps-list">
+      <div class="step-row">
+        <div class="step-row-num">01</div>
+        <div class="step-row-body">
+          <div class="step-row-title">Telegram-бот</div>
+          <p class="step-row-desc">Напишите нашему боту <a href="https://t.me/Eternity11q_bot" target="_blank" style="color:var(--acc4)">@Eternity11q_bot</a> и заполните анкету. После проверки вас пригласят на сервер.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-row-num">02</div>
+        <div class="step-row-body">
+          <div class="step-row-title">Telegram-канал</div>
+          <p class="step-row-desc">После добавления вы получите ссылку на закрытый Telegram-канал сервера.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-row-num">03</div>
+        <div class="step-row-body">
+          <div class="step-row-title">Вайтлист</div>
+          <p class="step-row-desc">В Telegram-канале напишите свой игровой ник Minecraft — администрация добавит вас в вайтлист.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-row-num">04</div>
+        <div class="step-row-body">
+          <div class="step-row-title">Заходите!</div>
+          <p class="step-row-desc">Открывайте Minecraft Java Edition 1.20+, добавляйте сервер по IP выше и играйте.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<main class="content">
+  <div class="stats">
+    <div class="stat"><strong>1.20+</strong><span>Версия</span></div>
+    <div class="stat"><strong>24/7</strong><span>Онлайн</span></div>
+    <div class="stat"><strong>PvE</strong><span>Режим</span></div>
+    <div class="stat"><strong>RU</strong><span>Комьюнити</span></div>
+  </div>
+
+  <div class="sh"><h2>Главные разделы</h2></div>
+  <div class="nav-links-list">
+    <a class="nav-link-row" href="about.html">
+      <div class="nlr-left">
+        <div class="nlr-title">О сервере</div>
+        <div class="nlr-desc">Правила приёма, плагины, особенности игрового процесса</div>
+      </div>
+      <span class="nlr-arrow">→</span>
+    </a>
+    <a class="nav-link-row" href="rules.html">
+      <div class="nlr-left">
+        <div class="nlr-title">Правила</div>
+        <div class="nlr-desc">Правила чата и сервера — прочитайте перед тем, как начать играть</div>
+      </div>
+      <span class="nlr-arrow">→</span>
+    </a>
+    <a class="nav-link-row" href="wiki.html">
+      <div class="nlr-left">
+        <div class="nlr-title">Вики</div>
+        <div class="nlr-desc">Гайды по плагинам, новые рецепты, FAQ и механики сервера</div>
+      </div>
+      <span class="nlr-arrow">→</span>
+    </a>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-logo">ETERNITY</div>
+      <div class="footer-links">
+        <a class="footer-link" href="about.html">О сервере</a>
+        <a class="footer-link" href="rules.html">Правила</a>
+        <a class="footer-link" href="wiki.html">Вики</a>
+        <a class="footer-link" href="shop.html">Магазин</a>
+        <a class="footer-link accent" href="https://t.me/Eternity11q_bot" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Eternity &nbsp;·&nbsp; Не является официальным продуктом Mojang Synergies AB.</div>
+  </div>
+</footer>
+
+</div>
+
+<div class="toast" id="toast">Скопировано!</div>
+
+<script>
+function copyIp(){
+  navigator.clipboard.writeText('ip-213-152-43-62.joinserver.xyz:25952').then(()=>{
+    const t=document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2000);
+  });
+}
+</script>
+<script>
+(function(){
+  var stored=localStorage.getItem('eternity_user'),user=null;
+  try{if(stored)user=JSON.parse(stored);}catch(e){}
+  var nr=document.getElementById('nav-right-auth');
+  if(user){
+    var initial=(user.first_name||'U')[0];
+    var av=user.photo_url?'<img class="nav-auth-avatar" src="'+user.photo_url+'" alt="">':'<div class="nav-auth-avatar-placeholder">'+initial+'</div>';
+    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html">'+av+'<span>'+user.first_name+'</span></a>';
+  }else{
+    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Войти</span></a>';
+  }
+})();
+</script>
+<script>
+(function(){
+  document.addEventListener("click", function(e) {
+    var a = e.target.closest("a");
+    if (!a) return;
+    var href = a.getAttribute("href");
+    if (!href || href.startsWith("#") || href.startsWith("http") || href.startsWith("mailto") || a.target === "_blank") return;
+    e.preventDefault();
+    document.querySelector(".wrap").classList.add("page-transition-out");
+    setTimeout(function(){ window.location.href = href; }, 320);
+  });
+})();
+</script>
+</body>
+</html>

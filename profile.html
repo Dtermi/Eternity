@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ETERNITY — Профиль</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"/>
+<style>
+.tg-widget-outer{display:flex;justify-content:center;min-height:56px;align-items:center;margin-bottom:8px}
+.tg-widget-loading{font-size:13px;color:var(--txt3)}
+</style>
+</head>
+<body>
+<div class="orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="wrap">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="logo.png" alt="">ETERNITY</a>
+    <div class="nav-links">
+      <a class="nav-a" href="index.html">Главная</a>
+      <a class="nav-a" href="about.html">О сервере</a>
+      <a class="nav-a" href="rules.html">Правила</a>
+      <a class="nav-a" href="wiki.html">Вики</a>
+    </div>
+    <div class="nav-right" id="nav-right-auth"></div>
+  </div>
+</nav>
+
+<!-- ══ LOGIN ══════════════════════════════════════════════════ -->
+<div id="view-login" style="display:none">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-card-inner">
+        <div class="login-icon">⚔</div>
+        <div class="login-title">Войдите в профиль</div>
+        <p class="login-desc">Авторизуйтесь через Telegram — это займёт несколько секунд.</p>
+
+        <div class="tg-widget-outer" id="tg-widget-outer">
+          <span class="tg-widget-loading">Загрузка...</span>
+        </div>
+
+        <p class="login-note" id="login-note">
+          Telegram откроет окно подтверждения. Ваши данные не передаются третьим лицам.
+        </p>
+        <p id="login-err" style="display:none;font-size:12px;color:#f87171;margin-top:10px;line-height:1.6;text-align:center"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROFILE ════════════════════════════════════════════════ -->
+<div id="view-profile" style="display:none">
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-kicker">Личный кабинет</div>
+      <h1>Профиль</h1>
+      <p class="page-lead">Ваша страница игрока на сервере Eternity.</p>
+    </div>
+  </section>
+
+  <div class="profile-layout">
+    <aside>
+      <div class="profile-card">
+        <div class="profile-card-banner"></div>
+        <div id="profile-avatar-wrap"></div>
+        <div class="profile-card-body">
+          <div class="profile-card-name" id="profile-name">—</div>
+          <div class="profile-card-sub" id="profile-username">—</div>
+          <div class="profile-card-sep"></div>
+          <div class="profile-stat-row"><span class="k">Telegram ID</span><span class="v" id="profile-id">—</span></div>
+          <div class="profile-stat-row"><span class="k">Никнейм MC</span><span class="v" id="profile-mc-nick">Не указан</span></div>
+          <div class="profile-stat-row"><span class="k">Дата входа</span><span class="v" id="profile-joined">—</span></div>
+          <div class="profile-card-sep"></div>
+          <a class="profile-tg-link" href="https://t.me/Eternity11q_bot" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            Бот сервера
+          </a>
+          <button class="profile-logout" onclick="logout()">Выйти из аккаунта</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="profile-main">
+      <div class="profile-section">
+        <div class="profile-section-title">Никнейм Minecraft</div>
+        <div class="profile-nick-form">
+          <div class="profile-nick-row">
+            <input class="profile-nick-input" type="text" id="mc-nick-input" placeholder="Например: Steve_2007" maxlength="16" autocomplete="off" spellcheck="false"/>
+            <button class="profile-nick-save" onclick="saveNick()">Сохранить</button>
+          </div>
+          <div class="profile-nick-hint">Только латинские буквы, цифры и _ · 3–16 символов</div>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <div class="profile-section-title">Значки</div>
+        <div id="badge-list" class="profile-badge-list">
+          <div class="profile-badge">⚔ Игрок</div>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <div class="profile-section-title">Активные привилегии</div>
+        <div class="profile-coming">
+          <div class="profile-coming-icon">🔮</div>
+          <div>Скоро — здесь будут отображаться<br>ваши активные привилегии с сервера</div>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <div class="profile-section-title">Статистика</div>
+        <div class="profile-coming">
+          <div class="profile-coming-icon">📊</div>
+          <div>Скоро — статистика игры,<br>время онлайна и другие показатели</div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-logo">ETERNITY</div>
+      <div class="footer-links">
+        <a class="footer-link" href="about.html">О сервере</a>
+        <a class="footer-link" href="rules.html">Правила</a>
+        <a class="footer-link" href="wiki.html">Вики</a>
+        <a class="footer-link" href="shop.html">Магазин</a>
+        <a class="footer-link accent" href="https://t.me/Eternity11q_bot" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Eternity · Не является официальным продуктом Mojang Synergies AB.</div>
+  </div>
+</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══ CONFIG ════════════════════════════════════════════════════
+// Укажи username своего бота (без @)
+var BOT_NAME = 'EternitySiteAuth_bot';
+
+// ══ Telegram callback (ОБЯЗАТЕЛЬНО глобальная) ════════════════
+function onTelegramAuth(user) {
+  var userData = {
+    id:         user.id,
+    first_name: user.first_name || '',
+    last_name:  user.last_name  || '',
+    username:   user.username   || '',
+    photo_url:  user.photo_url  || '',
+    auth_date:  user.auth_date,
+    hash:       user.hash,
+    joined:     new Date().toLocaleDateString('ru', {day:'2-digit',month:'long',year:'numeric'}),
+    mcNick:     localStorage.getItem('eternity_mc_nick') || ''
+  };
+  localStorage.setItem('eternity_user', JSON.stringify(userData));
+  renderProfile(userData);
+  showToast('Добро пожаловать, ' + userData.first_name + '!');
+}
+
+// ══ Загружаем виджет динамически ══════════════════════════════
+// (это единственный надёжный способ — вставлять script через JS,
+//  потому что GitHub Pages сжимает/переписывает inline-скрипты)
+function loadTelegramWidget() {
+  var outer = document.getElementById('tg-widget-outer');
+  if (!outer) return;
+
+  // Создаём контейнер для виджета
+  var container = document.createElement('div');
+  container.id = 'tg-widget-container';
+  outer.innerHTML = '';
+  outer.appendChild(container);
+
+  // Создаём script-тег с нужными data-атрибутами
+  var s = document.createElement('script');
+  s.src = 'https://telegram.org/js/telegram-widget.js?22';
+  s.setAttribute('data-telegram-login', BOT_NAME);
+  s.setAttribute('data-size', 'large');
+  s.setAttribute('data-radius', '10');
+  s.setAttribute('data-onauth', 'onTelegramAuth(user)');
+  s.setAttribute('data-request-access', 'write');
+  s.async = true;
+
+  s.onerror = function() {
+    showWidgetError('Не удалось загрузить виджет Telegram. Проверьте интернет-соединение.');
+  };
+
+  // Таймаут — если через 5 сек iframe не появился, значит домен не настроен
+  var timer = setTimeout(function() {
+    var iframe = document.querySelector('#tg-widget-container iframe');
+    if (!iframe) {
+      showWidgetError(
+        'Виджет не загрузился. Скорее всего, домен ещё не привязан к боту.<br><br>' +
+        'Откройте <strong>@BotFather</strong> → выберите бота → <code>/setdomain</code> → введите <code>dtermi.github.io</code>'
+      );
+    }
+  }, 5000);
+
+  s.onload = function() {
+    // Виджет загрузился — убираем таймаут ошибки через доп. паузу
+    setTimeout(function() {
+      clearTimeout(timer);
+    }, 1000);
+  };
+
+  container.appendChild(s);
+}
+
+function showWidgetError(msg) {
+  var outer = document.getElementById('tg-widget-outer');
+  outer.innerHTML = '';
+  var err = document.getElementById('login-err');
+  err.innerHTML = msg;
+  err.style.display = '';
+}
+
+// ══ Render ════════════════════════════════════════════════════
+function renderProfile(user) {
+  document.getElementById('view-login').style.display   = 'none';
+  document.getElementById('view-profile').style.display = '';
+
+  document.getElementById('profile-name').textContent =
+    user.first_name + (user.last_name ? ' ' + user.last_name : '');
+  document.getElementById('profile-username').textContent =
+    user.username ? '@' + user.username : 'Telegram пользователь';
+  document.getElementById('profile-id').textContent     = user.id;
+  document.getElementById('profile-mc-nick').textContent = user.mcNick || 'Не указан';
+  document.getElementById('profile-joined').textContent  = user.joined || '—';
+
+  if (user.mcNick) document.getElementById('mc-nick-input').value = user.mcNick;
+
+  var wrap = document.getElementById('profile-avatar-wrap');
+  if (user.photo_url) {
+    wrap.innerHTML = '<img class="profile-card-avatar" src="' + user.photo_url + '" alt="">';
+  } else {
+    var initial = (user.first_name || 'U')[0].toUpperCase();
+    wrap.innerHTML = '<div class="profile-card-avatar-placeholder">' + initial + '</div>';
+  }
+
+  renderNavAuth(user);
+}
+
+function renderNavAuth(user) {
+  var nr = document.getElementById('nav-right-auth');
+  var initial = (user.first_name || 'U')[0].toUpperCase();
+  var av = user.photo_url
+    ? '<img class="nav-auth-avatar" src="' + user.photo_url + '" alt="">'
+    : '<div class="nav-auth-avatar-placeholder">' + initial + '</div>';
+  nr.innerHTML =
+    '<a class="nav-pill" href="shop.html">Магазин →</a>' +
+    '<a class="nav-auth-btn" href="profile.html">' + av + '<span>' + user.first_name + '</span></a>';
+}
+
+function renderNavGuest() {
+  var nr = document.getElementById('nav-right-auth');
+  nr.innerHTML =
+    '<a class="nav-pill" href="shop.html">Магазин →</a>' +
+    '<a class="nav-auth-btn" href="profile.html">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+        '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>' +
+        '<circle cx="12" cy="7" r="4"/>' +
+      '</svg>' +
+      '<span>Войти</span>' +
+    '</a>';
+}
+
+// ══ Nick / logout ═════════════════════════════════════════════
+function saveNick() {
+  var val = document.getElementById('mc-nick-input').value.trim();
+  if (!/^[a-zA-Z0-9_]{3,16}$/.test(val)) {
+    showToast('Никнейм: 3–16 символов, латиница/цифры/_');
+    return;
+  }
+  var user = JSON.parse(localStorage.getItem('eternity_user') || '{}');
+  user.mcNick = val;
+  localStorage.setItem('eternity_user', JSON.stringify(user));
+  localStorage.setItem('eternity_mc_nick', val);
+  document.getElementById('profile-mc-nick').textContent = val;
+  showToast('Никнейм сохранён!');
+}
+
+function logout() {
+  localStorage.removeItem('eternity_user');
+  location.reload();
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2500);
+}
+
+// ══ Init ══════════════════════════════════════════════════════
+(function() {
+  var stored = localStorage.getItem('eternity_user');
+  if (stored) {
+    try {
+      var user = JSON.parse(stored);
+      // Проверяем что данные не устарели (старше 30 дней — перелогин)
+      var authDate = parseInt(user.auth_date || 0);
+      var age = Date.now() / 1000 - authDate;
+      if (age < 30 * 86400) {
+        renderProfile(user);
+        return;
+      }
+    } catch(e) {}
+    localStorage.removeItem('eternity_user');
+  }
+
+  // Гость — показываем страницу входа и загружаем виджет
+  document.getElementById('view-login').style.display = '';
+  renderNavGuest();
+  loadTelegramWidget();
+})();
+</script>
+<script>
+(function(){
+  document.addEventListener("click", function(e) {
+    var a = e.target.closest("a");
+    if (!a) return;
+    var href = a.getAttribute("href");
+    if (!href || href.startsWith("#") || href.startsWith("http") || href.startsWith("mailto") || a.target === "_blank") return;
+    e.preventDefault();
+    document.querySelector(".wrap").classList.add("page-transition-out");
+    setTimeout(function(){ window.location.href = href; }, 320);
+  });
+})();
+</script>
+</body>
+</html>

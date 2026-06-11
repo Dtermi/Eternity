@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ETERNITY — Вики: BreweryX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"/>
+<style>
+.brew-step{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.brew-step:first-of-type{border-top:1px solid var(--border)}
+.brew-step-num{width:36px;height:36px;border-radius:8px;background:#7c3aed18;border:1px solid #7c3aed35;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--acc4);flex-shrink:0}
+.brew-step-body h4{font-size:17px;font-weight:600;color:#fff;margin-bottom:5px}
+.brew-step-body p{font-size:15px;color:var(--txt2);line-height:1.7}
+
+/* ── SEARCH ── */
+.wiki-search-wrap{position:relative;margin-bottom:28px}
+.wiki-search{width:100%;background:var(--s1);border:1px solid var(--border);border-radius:10px;color:var(--txt);font-family:var(--fi);font-size:16px;padding:13px 48px 13px 18px;outline:none;transition:.15s}
+.wiki-search:focus{border-color:var(--acc3);box-shadow:0 0 0 3px #7c3aed15}
+.wiki-search::placeholder{color:var(--txt3)}
+.wiki-search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--txt3);pointer-events:none;font-size:16px}
+#search-empty{display:none;text-align:center;padding:28px 0;font-size:15px;color:var(--txt3)}
+
+/* ── RECIPE CARDS ── */
+.recipe-grid{display:flex;flex-direction:column;gap:0}
+.recipe-item{padding:18px 0;border-bottom:1px solid var(--border);transition:.15s;cursor:pointer}
+.recipe-item:first-of-type{border-top:1px solid var(--border)}
+.recipe-item.hidden{display:none}
+.recipe-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:0}
+.recipe-header.open{margin-bottom:14px}
+.recipe-name{font-size:18px;font-weight:600;color:#fff;display:flex;align-items:center;gap:10px;transition:.15s}
+.recipe-item:hover .recipe-name{color:var(--acc4)}
+.recipe-badge{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:#7c3aed18;border:1px solid #7c3aed30;color:var(--acc4);white-space:nowrap}
+.recipe-badge.alc-high{background:#7f1d1d18;border-color:#f8717125;color:#f87171}
+.recipe-badge.alc-med{background:#78350f18;border-color:#fbbf2425;color:#fbbf24}
+.recipe-badge.alc-low{background:#14532d18;border-color:#22c55e25;color:#22c55e}
+.recipe-badge.no-alc{background:#1e1a3018;border-color:#7c3aed25;color:var(--txt2)}
+.recipe-arrow{color:var(--txt3);font-size:14px;transition:.2s;flex-shrink:0}
+.recipe-item.open .recipe-arrow{transform:rotate(180deg);color:var(--acc4)}
+.recipe-body{display:none;grid-template-columns:1fr 1fr;gap:16px}
+.recipe-item.open .recipe-body{display:grid}
+.recipe-col-title{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--txt3);margin-bottom:8px}
+.recipe-ing-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.recipe-ing-list li{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--txt2)}
+.recipe-ing-list li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--acc4);flex-shrink:0}
+.recipe-props{display:flex;flex-direction:column;gap:6px}
+.rp-row{display:flex;justify-content:space-between;font-size:14px;padding:5px 0;border-bottom:1px solid var(--border)}
+.rp-row:last-child{border-bottom:none}
+.rp-k{color:var(--txt3)}
+.rp-v{color:var(--txt);font-weight:500}
+.recipe-effects{margin-top:10px;font-size:13px;color:var(--txt2);line-height:1.6;grid-column:1/-1;padding-top:10px;border-top:1px solid var(--border)}
+@media(max-width:560px){.recipe-body{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="wrap">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="logo.png" alt="">ETERNITY</a>
+    <div class="nav-links">
+      <a class="nav-a" href="index.html">Главная</a>
+      <a class="nav-a" href="about.html">О сервере</a>
+      <a class="nav-a" href="rules.html">Правила</a>
+      <a class="nav-a on" href="wiki.html">Вики</a>
+    </div>
+    <div class="nav-right" id="nav-right-auth">
+      <!-- populated by auth script -->
+    </div>
+  </div>
+</nav>
+
+<div class="rules-layout">
+  <aside class="rules-sidebar-left">
+    <div class="sidebar-title">Вики</div>
+    <nav class="sidebar-nav">
+      <a href="wiki.html">← Назад</a>
+      <a href="wiki-brewery.html" class="active">BreweryX</a>
+      <a href="wiki-spdrug.html">SPDrug</a>
+    </nav>
+    <div style="margin-top:20px">
+      <div class="sidebar-title">Разделы</div>
+      <nav class="sidebar-nav">
+        <a href="#guide">Гайд</a>
+        <a href="#recipes">Рецепты</a>
+      </nav>
+    </div>
+  </aside>
+
+  <main class="rules-main">
+    <h1 class="rules-page-title">BreweryX</h1>
+    <p style="font-size:16px;color:var(--txt2);line-height:1.75;margin-bottom:32px">
+      BreweryX — плагин на варку алкоголя. Котёл, дистилляция, выдержка в бочке — чем точнее следуешь рецепту, тем выше качество напитка. Пьяные эффекты, шатание, искажение текста в чате.
+    </p>
+
+    <!-- GUIDE -->
+    <section class="rules-section" id="guide">
+      <div class="rules-section-header">
+        <div class="rules-section-num" style="font-size:11px">КАК</div>
+        <h2>Как варить</h2>
+      </div>
+
+      <div class="brew-step">
+        <div class="brew-step-num">1</div>
+        <div class="brew-step-body">
+          <h4>Котёл</h4>
+          <p>Поставь котёл над огнём (или другим источником тепла) и наполни водой. Добавь ингредиенты правым кликом. Проверяй время варки часами (ПКМ по котлу с часами в руке). Когда время истекло — набери напиток в стеклянные бутылки.</p>
+        </div>
+      </div>
+      <div class="brew-step">
+        <div class="brew-step-num">2</div>
+        <div class="brew-step-body">
+          <h4>Дистилляция (если нужна)</h4>
+          <p>Вставь <strong style="color:#fff">пыль светокамня</strong> в верхний слот стойки для варки как фильтр — она не расходуется. Ставь бутылки снизу и жди. Количество прогонов важно для рецепта.</p>
+        </div>
+      </div>
+      <div class="brew-step">
+        <div class="brew-step-num">3</div>
+        <div class="brew-step-body">
+          <h4>Выдержка в бочке (если нужна)</h4>
+          <p>Сделай деревянную бочку и поставь табличку с текстом <strong style="color:#fff">Barrel</strong>. Клади бутылки внутрь и жди — <strong style="color:#fff">1 год = 1 игровой день</strong>. Тип дерева влияет на качество.</p>
+        </div>
+      </div>
+      <div class="brew-step">
+        <div class="brew-step-num">4</div>
+        <div class="brew-step-body">
+          <h4>Качество</h4>
+          <p>Чем точнее выдержан рецепт по времени, количеству дистилляций и выдержке — тем выше качество (1-3 звезды). Плохое качество = слабее эффект или другой вкус.</p>
+        </div>
+      </div>
+
+      <!-- Wood types -->
+      <div style="margin-top:24px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--txt3);margin-bottom:12px">Типы дерева для бочек</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+          <div style="font-size:13px;color:var(--txt2)"><span style="color:var(--txt);font-weight:600">0</span> — любое</div>
+          <div style="font-size:13px;color:var(--txt2)"><span style="color:var(--txt);font-weight:600">1</span> — берёза</div>
+          <div style="font-size:13px;color:var(--txt2)"><span style="color:var(--txt);font-weight:600">2</span> — дуб</div>
+          <div style="font-size:13px;color:var(--txt2)"><span style="color:var(--txt);font-weight:600">3</span> — джунгли</div>
+          <div style="font-size:13px;color:var(--txt2)"><span style="color:var(--txt);font-weight:600">4</span> — ель</div>
+          <div style="font-size:13px;color:var(--txt2)"><span style="color:var(--txt);font-weight:600">5</span> — акация</div>
+          <div style="font-size:13px;color:var(--txt2)"><span style="color:var(--txt);font-weight:600">6</span> — тёмный дуб</div>
+          <div style="font-size:13px;color:var(--txt2)"><span style="color:var(--txt);font-weight:600">10</span> — вишня</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="rules-divider"></div>
+
+    <!-- RECIPES -->
+    <section class="rules-section" id="recipes">
+      <div class="rules-section-header">
+        <div class="rules-section-num" style="font-size:11px">РЦ</div>
+        <h2>Рецепты напитков</h2>
+      </div>
+
+      <div class="wiki-search-wrap">
+        <input class="wiki-search" type="text" id="brewery-search" placeholder="Поиск: водка, пиво, vodka, beer...">
+        <span class="wiki-search-icon">⌕</span>
+      </div>
+      <div id="search-empty">Ничего не найдено</div>
+
+      <div class="recipe-grid" id="recipe-grid">
+
+        <!-- ПШЕНИЧНОЕ ПИВО -->
+        <div class="recipe-item" data-search="пшеничное пиво wheat beer wheatbeer">
+          <div class="recipe-header">
+            <div class="recipe-name">Пшеничное пиво <span class="recipe-badge alc-low">Алк. 5</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Пшеница × 3</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">8 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">Берёза, 2 года</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">1/10</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ПИВО -->
+        <div class="recipe-item" data-search="пиво beer">
+          <div class="recipe-header">
+            <div class="recipe-name">Пиво <span class="recipe-badge alc-low">Алк. 6</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Пшеница × 6</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">8 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">любое дерево, 3 года</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">1/10</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ТЁМНОЕ ПИВО -->
+        <div class="recipe-item" data-search="тёмное пиво dark beer darkbeer портер">
+          <div class="recipe-header">
+            <div class="recipe-name">Тёмное пиво <span class="recipe-badge alc-low">Алк. 7</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Пшеница × 6</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">8 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">Тёмный дуб, 8 лет</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">2/10</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- КРАСНОЕ ВИНО -->
+        <div class="recipe-item" data-search="вино wine красное red">
+          <div class="recipe-header">
+            <div class="recipe-name">Красное вино <span class="recipe-badge alc-low">Алк. 8</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Сладкие ягоды × 5</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">5 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">любое дерево, 20 лет</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">4/10</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- МЁД -->
+        <div class="recipe-item" data-search="мёд мед медовуха mead">
+          <div class="recipe-header">
+            <div class="recipe-name">Медовуха <span class="recipe-badge alc-low">Алк. 9</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Сахарный тростник × 6</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">3 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">Дуб, 4 года</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">2/10</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ЯБЛОЧНАЯ МЕДОВУХА -->
+        <div class="recipe-item" data-search="яблочная медовуха apple mead">
+          <div class="recipe-header">
+            <div class="recipe-name">Яблочная медовуха <span class="recipe-badge alc-low">Алк. 11</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Сахарный тростник × 6</li><li>Яблоко × 2</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">4 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">Дуб, 4 года</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">4/10</span></div>
+              </div>
+            </div>
+            <div class="recipe-effects">Эффект: подводное дыхание</div>
+          </div>
+        </div>
+
+        <!-- СИДР -->
+        <div class="recipe-item" data-search="сидр cidre cider яблочный">
+          <div class="recipe-header">
+            <div class="recipe-name">Яблочный сидр <span class="recipe-badge alc-low">Алк. 7</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Яблоко × 14</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">7 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">любое дерево, 3 года</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">4/10</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ЯБЛОЧНЫЙ ЛИКЁР -->
+        <div class="recipe-item" data-search="яблочный ликёр кальвадос apple liquor calvados">
+          <div class="recipe-header">
+            <div class="recipe-name">Яблочный ликёр / Кальвадос <span class="recipe-badge alc-med">Алк. 14</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Яблоко × 12</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">16 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">3 раза</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">Акация, 6 лет</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">5/10</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ВИСКИ -->
+        <div class="recipe-item" data-search="виски whiskey scotch whisky">
+          <div class="recipe-header">
+            <div class="recipe-name">Виски / Скотч <span class="recipe-badge alc-high">Алк. 26</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Пшеница × 10</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">10 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">2 раза (50 сек)</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">Ель, 18 лет</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">7/10</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ОГНЕННЫЙ ВИСКИ -->
+        <div class="recipe-item" data-search="огненный виски fire whiskey blazing">
+          <div class="recipe-header">
+            <div class="recipe-name">Огненный виски <span class="recipe-badge alc-high">Алк. 28</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Пшеница × 10</li><li>Огненный порошок × 2</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">12 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">3 раза (55 сек)</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">Ель, 18 лет</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">7/10</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- РОМ -->
+        <div class="recipe-item" data-search="ром rum golden">
+          <div class="recipe-header">
+            <div class="recipe-name">Ром / Золотой ром <span class="recipe-badge alc-high">Алк. 30</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Сахарный тростник × 18</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">6 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">2 раза (30 сек)</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">Дуб, 14 лет</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">6/10</span></div>
+              </div>
+            </div>
+            <div class="recipe-effects">Эффект: огнестойкость (хорошее качество). Слабое качество — яд.</div>
+          </div>
+        </div>
+
+        <!-- ВОДКА -->
+        <div class="recipe-item" data-search="водка vodka russian">
+          <div class="recipe-header">
+            <div class="recipe-name">Водка / Русская водка <span class="recipe-badge alc-med">Алк. 20</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Картофель × 10</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">15 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">3 раза</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">4/10</span></div>
+              </div>
+            </div>
+            <div class="recipe-effects">Эффект: слабость + яд (плохое качество)</div>
+          </div>
+        </div>
+
+        <!-- ГРИБНАЯ ВОДКА -->
+        <div class="recipe-item" data-search="грибная водка mushroom shroom vodka светящаяся">
+          <div class="recipe-header">
+            <div class="recipe-name">Грибная водка <span class="recipe-badge alc-med">Алк. 18</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Картофель × 10</li><li>Красный гриб × 3</li><li>Коричневый гриб × 3</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">18 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">5 раз</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">7/10</span></div>
+              </div>
+            </div>
+            <div class="recipe-effects">Эффект: слабость, спутанность, ночное зрение, слепота, замедление</div>
+          </div>
+        </div>
+
+        <!-- ЗОЛОТАЯ ВОДКА -->
+        <div class="recipe-item" data-search="золотая водка golden g_vodka">
+          <div class="recipe-header">
+            <div class="recipe-name">Золотая водка <span class="recipe-badge alc-med">Алк. 20</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Картофель × 10</li><li>Золотой самородок × 2</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">18 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">3 раза</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">6/10</span></div>
+              </div>
+            </div>
+            <div class="recipe-effects">Эффект: слабость + яд</div>
+          </div>
+        </div>
+
+        <!-- ДЖИ -->
+        <div class="recipe-item" data-search="джин gin old tom">
+          <div class="recipe-header">
+            <div class="recipe-name">Джин / Old Tom Gin <span class="recipe-badge alc-med">Алк. 20</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Пшеница × 9</li><li>Синие цветы (василёк) × 6</li><li>Яблоко × 1</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">6 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">2 раза</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">6/10</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ТЕКИЛА -->
+        <div class="recipe-item" data-search="текила tequila mezcal анехо">
+          <div class="recipe-header">
+            <div class="recipe-name">Текила / Мескаль <span class="recipe-badge alc-med">Алк. 20</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Кактус × 8</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">15 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">2 раза</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">Берёза, 12 лет</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">5/10</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- АБСЕНТ -->
+        <div class="recipe-item" data-search="абсент absinthe">
+          <div class="recipe-header">
+            <div class="recipe-name">Абсент <span class="recipe-badge alc-high">Алк. 42</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Трава × 15</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">3 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">6 раз (80 сек)</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">8/10</span></div>
+              </div>
+            </div>
+            <div class="recipe-effects">Эффект: яд</div>
+          </div>
+        </div>
+
+        <!-- ЗЕЛЁНЫЙ АБСЕНТ -->
+        <div class="recipe-item" data-search="зелёный абсент green absinthe">
+          <div class="recipe-header">
+            <div class="recipe-name">Зелёный абсент <span class="recipe-badge alc-high">Алк. 46</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Трава × 17</li><li>Ядовитый картофель × 2</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">5 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">6 раз (85 сек)</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">9/10</span></div>
+              </div>
+            </div>
+            <div class="recipe-effects">Эффект: яд, урон, ночное зрение</div>
+          </div>
+        </div>
+
+        <!-- КОФЕ -->
+        <div class="recipe-item" data-search="кофе coffee">
+          <div class="recipe-header">
+            <div class="recipe-name">Кофе <span class="recipe-badge no-alc">Без алкоголя</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Какао-бобы × 12</li><li>Ведро молока × 2</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">2 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">3/10</span></div>
+              </div>
+            </div>
+            <div class="recipe-effects">Эффект: регенерация, скорость. Снимает опьянение.</div>
+          </div>
+        </div>
+
+        <!-- ЯИЧНЫЙ ЛИКЁР -->
+        <div class="recipe-item" data-search="яичный ликёр eggnog advocaat egg liquor">
+          <div class="recipe-header">
+            <div class="recipe-name">Яичный ликёр / Эгг-ног <span class="recipe-badge alc-low">Алк. 10</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Яйцо × 5</li><li>Сахар × 2</li><li>Ведро молока × 1</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">2 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">любое дерево, 3 года</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">4/10</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ГОРЯЧИЙ ШОКОЛАД -->
+        <div class="recipe-item" data-search="горячий шоколад hot chocolate cocoa">
+          <div class="recipe-header">
+            <div class="recipe-name">Горячий шоколад <span class="recipe-badge no-alc">Без алкоголя</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Печенье × 3</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">2 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">2/10</span></div>
+              </div>
+            </div>
+            <div class="recipe-effects">Эффект: ускорение добычи</div>
+          </div>
+        </div>
+
+        <!-- АЙСКОФЕ -->
+        <div class="recipe-item" data-search="айскофе iced coffee холодный кофе">
+          <div class="recipe-header">
+            <div class="recipe-name">Айс-кофе <span class="recipe-badge no-alc">Без алкоголя</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Печенье × 8</li><li>Снежок × 4</li><li>Ведро молока × 1</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">1 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">4/10</span></div>
+              </div>
+            </div>
+            <div class="recipe-effects">Эффект: регенерация, скорость. Снимает опьянение.</div>
+          </div>
+        </div>
+
+        <!-- КАРТОФЕЛЬНЫЙ СУП -->
+        <div class="recipe-item" data-search="картофельный суп potato soup">
+          <div class="recipe-header">
+            <div class="recipe-name">Картофельный суп <span class="recipe-badge no-alc">Без алкоголя</span></div>
+            <span class="recipe-arrow">↓</span>
+          </div>
+          <div class="recipe-body">
+            <div>
+              <div class="recipe-col-title">Ингредиенты</div>
+              <ul class="recipe-ing-list"><li>Картофель × 5</li><li>Трава × 3</li></ul>
+            </div>
+            <div>
+              <div class="recipe-col-title">Процесс</div>
+              <div class="recipe-props">
+                <div class="rp-row"><span class="rp-k">Варка</span><span class="rp-v">3 мин</span></div>
+                <div class="rp-row"><span class="rp-k">Дистилляция</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Бочка</span><span class="rp-v">не нужна</span></div>
+                <div class="rp-row"><span class="rp-k">Сложность</span><span class="rp-v">1/10</span></div>
+              </div>
+            </div>
+            <div class="recipe-effects">Эффект: лечение</div>
+          </div>
+        </div>
+
+      </div><!-- /recipe-grid -->
+    </section>
+  </main>
+
+  <aside class="rules-sidebar-right">
+    <div class="sidebar-title">На странице</div>
+    <ul class="toc-list">
+      <li><a href="#guide">Как варить</a></li>
+      <li><a href="#recipes">Рецепты</a></li>
+      <li style="padding-left:10px"><a href="#recipes">Пиво / Вино</a></li>
+      <li style="padding-left:10px"><a href="#recipes">Виски / Ром</a></li>
+      <li style="padding-left:10px"><a href="#recipes">Водка / Джин</a></li>
+      <li style="padding-left:10px"><a href="#recipes">Текила / Абсент</a></li>
+      <li style="padding-left:10px"><a href="#recipes">Безалкогольные</a></li>
+    </ul>
+  </aside>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-logo">ETERNITY</div>
+      <div class="footer-links">
+        <a class="footer-link" href="about.html">О сервере</a>
+        <a class="footer-link" href="rules.html">Правила</a>
+        <a class="footer-link" href="wiki.html">Вики</a>
+        <a class="footer-link" href="shop.html">Магазин</a>
+        <a class="footer-link accent" href="https://t.me/Eternity11q_bot" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Eternity · Не является официальным продуктом Mojang Synergies AB.</div>
+  </div>
+</footer>
+</div>
+
+<script>
+// Аккордеон рецептов
+document.querySelectorAll('.recipe-item').forEach(item => {
+  item.querySelector('.recipe-header').addEventListener('click', () => {
+    item.classList.toggle('open');
+    item.querySelector('.recipe-header').classList.toggle('open');
+  });
+});
+
+// Поиск
+const searchInput = document.getElementById('brewery-search');
+const items = document.querySelectorAll('.recipe-item');
+const empty = document.getElementById('search-empty');
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase().trim();
+  let visible = 0;
+  items.forEach(item => {
+    const match = !q || item.dataset.search.includes(q) ||
+      item.querySelector('.recipe-name').textContent.toLowerCase().includes(q);
+    item.classList.toggle('hidden', !match);
+    if (match) visible++;
+  });
+  empty.style.display = visible === 0 ? 'block' : 'none';
+});
+</script>
+<script>
+(function(){
+  var stored=localStorage.getItem('eternity_user'),user=null;
+  try{if(stored)user=JSON.parse(stored);}catch(e){}
+  var nr=document.getElementById('nav-right-auth');
+  if(!nr)return;
+  if(user){
+    var initial=(user.first_name||'U')[0];
+    var av=user.photo_url?'<img class="nav-auth-avatar" src="'+user.photo_url+'" alt="">':'<div class="nav-auth-avatar-placeholder">'+initial+'</div>';
+    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html">'+av+'<span>'+user.first_name+'</span></a>';
+  }else{
+    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Войти</span></a>';
+  }
+})();
+</script>
+</body>
+</html>

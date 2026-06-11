@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ETERNITY — Вики</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<div class="wrap">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="logo.png" alt="">ETERNITY</a>
+    <div class="nav-links">
+      <a class="nav-a" href="index.html">Главная</a>
+      <a class="nav-a" href="about.html">О сервере</a>
+      <a class="nav-a" href="rules.html">Правила</a>
+      <a class="nav-a on" href="wiki.html">Вики</a>
+    </div>
+    <div class="nav-right" id="nav-right-auth">
+      <!-- populated by auth script -->
+    </div>
+  </div>
+</nav>
+
+<div class="wiki-layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="wiki-sidebar-left">
+
+    <div class="wsl-group">
+      <div class="wsl-group-title">Введение</div>
+      <nav class="wsl-nav">
+        <a href="#faq" class="wsl-link active">Часто задаваемые вопросы</a>
+        <a href="#faq-join" class="wsl-link sub">Как попасть?</a>
+        <a href="#faq-version" class="wsl-link sub">Версия</a>
+        <a href="#faq-whitelist" class="wsl-link sub">Вайтлист</a>
+        <a href="#faq-mods" class="wsl-link sub">Разрешённые моды</a>
+        <a href="#faq-claim" class="wsl-link sub">Приваты</a>
+        <a href="#faq-report" class="wsl-link sub">Связь с модераторами</a>
+      </nav>
+    </div>
+
+    <div class="wsl-group">
+      <div class="wsl-group-title">Игровой контент</div>
+      <nav class="wsl-nav">
+        <a href="wiki-brewery.html" class="wsl-link">🍺 BreweryX — Алкоголь</a>
+        <a href="wiki-spdrug.html" class="wsl-link">⚗️ SPDrug — Синтез</a>
+        <a href="#guides" class="wsl-link">
+          Гайды по плагинам
+          <span class="wsl-soon">Скоро</span>
+        </a>
+        <a href="#recipes" class="wsl-link">
+          Новые рецепты
+          <span class="wsl-soon">Скоро</span>
+        </a>
+        <a href="#mechanics" class="wsl-link">
+          Механики сервера
+          <span class="wsl-soon">Скоро</span>
+        </a>
+      </nav>
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="wiki-main">
+
+    <div class="wiki-page-header">
+      <h1 class="wiki-page-title">Вики</h1>
+      <p class="wiki-page-lead">База знаний сервера Eternity — гайды, FAQ и механики.</p>
+    </div>
+
+    <!-- FAQ INTRO -->
+    <section class="wiki-section" id="faq">
+      <h2 class="wiki-h2">Часто задаваемые вопросы</h2>
+
+      <div class="wiki-entry open" id="faq-join">
+        <div class="wiki-entry-q" onclick="toggleEntry(this)">
+          <span>Как попасть на сервер?</span>
+          <span class="wiki-entry-arrow">↓</span>
+        </div>
+        <div class="wiki-entry-body">
+          <p>1. Напишите боту <strong style="color:var(--acc4)">@Eternity11q_bot</strong> в Telegram и заполните анкету.</p>
+          <p>2. После одобрения вас добавят на сервер и дадут ссылку на закрытый Telegram-канал.</p>
+          <p>3. В канале напишите свой ник Minecraft — администрация добавит вас в вайтлист.</p>
+          <p>4. Подключайтесь по IP: <code>ip-213-152-43-62.joinserver.xyz:25952</code></p>
+        </div>
+      </div>
+
+      <div class="wiki-entry" id="faq-version">
+        <div class="wiki-entry-q" onclick="toggleEntry(this)">
+          <span>Какая версия Minecraft нужна?</span>
+          <span class="wiki-entry-arrow">↓</span>
+        </div>
+        <div class="wiki-entry-body">
+          <p>Сервер работает на Java Edition <strong>1.20 и выше</strong>. Убедитесь, что ваш клиент обновлён до актуальной версии.</p>
+        </div>
+      </div>
+
+      <div class="wiki-entry" id="faq-whitelist">
+        <div class="wiki-entry-q" onclick="toggleEntry(this)">
+          <span>Что делать, если меня нет в вайтлисте?</span>
+          <span class="wiki-entry-arrow">↓</span>
+        </div>
+        <div class="wiki-entry-body">
+          <p>Убедитесь, что вы написали свой ник в Telegram-канале сервера. Если ник уже отправлен — обратитесь к администрации в личные сообщения.</p>
+        </div>
+      </div>
+
+      <div class="wiki-entry" id="faq-mods">
+        <div class="wiki-entry-q" onclick="toggleEntry(this)">
+          <span>Разрешённые и запрещённые модификации</span>
+          <span class="wiki-entry-arrow">↓</span>
+        </div>
+        <div class="wiki-entry-body">
+          <p><strong style="color:#f87171">Запрещены:</strong> freecam, x-ray, entity outliner, bedrock miner и другие читы.</p>
+          <p><strong style="color:var(--green2)">Разрешены:</strong> оптимизационные моды — OptiFine, Sodium, Iris и подобные. По вопросам о конкретном моде обращайтесь к модераторам.</p>
+        </div>
+      </div>
+
+      <div class="wiki-entry" id="faq-claim">
+        <div class="wiki-entry-q" onclick="toggleEntry(this)">
+          <span>Как приватить территорию?</span>
+          <span class="wiki-entry-arrow">↓</span>
+        </div>
+        <div class="wiki-entry-body">
+          <p>Подробный гайд по приватам скоро появится в этом разделе. А пока — спросите в чате, кто-нибудь из игроков поможет.</p>
+        </div>
+      </div>
+
+      <div class="wiki-entry" id="faq-report">
+        <div class="wiki-entry-q" onclick="toggleEntry(this)">
+          <span>Связь с модераторами / жалоба на игрока</span>
+          <span class="wiki-entry-arrow">↓</span>
+        </div>
+        <div class="wiki-entry-body">
+          <p>Подайте жалобу администрации в следующем формате:</p>
+          <p><strong style="color:var(--txt)">Ситуация</strong> → <strong style="color:var(--txt)">Доказательства</strong> (скриншоты / ссылки) → <strong style="color:var(--txt)">Комментарий</strong> (по желанию).</p>
+          <p>Полные правила подачи жалоб — в разделе <a href="rules.html#complaints" style="color:var(--acc4)">Правила</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="wiki-divider"></div>
+
+    <!-- LOOKING FOR GUIDES -->
+    <section class="wiki-section" id="guides">
+      <h2 class="wiki-h2">Ищете гайды?</h2>
+      <ul class="wiki-link-list">
+        <li><a href="wiki-brewery.html">🍺 Гайд по BreweryX — варка алкоголя и все рецепты</a></li>
+        <li><a href="wiki-spdrug.html">⚗️ Гайд по SPDrug — выращивание, сушка, лаборатория</a></li>
+        <li><span class="wiki-link-coming">Гайды по плагинам — скоро</span></li>
+      </ul>
+    </section>
+
+    <div class="wiki-divider"></div>
+
+    <!-- RECIPES -->
+    <section class="wiki-section" id="recipes">
+      <h2 class="wiki-h2">Ищете дополнительные рецепты?</h2>
+      <ul class="wiki-link-list">
+        <li><a href="wiki-brewery.html">Рецепты BreweryX (алкоголь)</a></li>
+        <li><span class="wiki-link-coming">Крафты плагинов — скоро</span></li>
+      </ul>
+    </section>
+
+    <div class="wiki-divider"></div>
+
+    <!-- MECHANICS -->
+    <section class="wiki-section" id="mechanics">
+      <h2 class="wiki-h2">Остались вопросы?</h2>
+      <p class="wiki-p">Возможно, ответ на ваш вопрос уже есть в разделе <a href="#faq" style="color:var(--acc4)">часто задаваемых вопросов</a>. Если нет — вы можете обратиться за помощью к <a href="https://t.me/Eternity11q_bot" target="_blank" style="color:var(--acc4)">администрации в Telegram</a>.</p>
+    </section>
+
+  </main>
+
+  <!-- RIGHT TOC -->
+  <aside class="wiki-sidebar-right">
+    <div class="wsr-title">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      На этой странице
+    </div>
+    <ul class="wsr-toc">
+      <li><a href="#faq">Часто задаваемые вопросы</a></li>
+      <li class="wsr-sub"><a href="#faq-join">Как попасть на сервер?</a></li>
+      <li class="wsr-sub"><a href="#faq-version">Версия</a></li>
+      <li class="wsr-sub"><a href="#faq-whitelist">Вайтлист</a></li>
+      <li class="wsr-sub"><a href="#faq-mods">Разрешённые моды</a></li>
+      <li class="wsr-sub"><a href="#faq-claim">Приваты</a></li>
+      <li class="wsr-sub"><a href="#faq-report">Связь с модераторами</a></li>
+      <li><a href="#guides">Ищете гайды?</a></li>
+      <li><a href="#recipes">Ищете рецепты?</a></li>
+      <li><a href="#mechanics">Остались вопросы?</a></li>
+    </ul>
+  </aside>
+
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-logo">ETERNITY</div>
+      <div class="footer-links">
+        <a class="footer-link" href="about.html">О сервере</a>
+        <a class="footer-link" href="rules.html">Правила</a>
+        <a class="footer-link" href="wiki.html">Вики</a>
+        <a class="footer-link" href="shop.html">Магазин</a>
+        <a class="footer-link accent" href="https://t.me/Eternity11q_bot" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Eternity &nbsp;·&nbsp; Не является официальным продуктом Mojang Synergies AB.</div>
+  </div>
+</footer>
+
+</div>
+
+<script>
+function toggleEntry(el) {
+  el.closest('.wiki-entry').classList.toggle('open');
+}
+
+// Highlight active TOC item on scroll
+const sections = document.querySelectorAll('[id]');
+const tocLinks = document.querySelectorAll('.wsr-toc a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 90) current = s.id;
+  });
+  tocLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+
+// Highlight active left sidebar link
+const wslLinks = document.querySelectorAll('.wsl-link');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 90) current = s.id;
+  });
+  wslLinks.forEach(a => {
+    const href = a.getAttribute('href');
+    a.classList.toggle('active', href === '#' + current || href === window.location.pathname + '#' + current);
+  });
+});
+</script>
+<script>
+(function(){
+  var stored=localStorage.getItem('eternity_user'),user=null;
+  try{if(stored)user=JSON.parse(stored);}catch(e){}
+  var nr=document.getElementById('nav-right-auth');
+  if(!nr)return;
+  if(user){
+    var initial=(user.first_name||'U')[0];
+    var av=user.photo_url?'<img class="nav-auth-avatar" src="'+user.photo_url+'" alt="">':'<div class="nav-auth-avatar-placeholder">'+initial+'</div>';
+    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html">'+av+'<span>'+user.first_name+'</span></a>';
+  }else{
+    nr.innerHTML='<a class="nav-pill" href="shop.html">Магазин →</a><a class="nav-auth-btn" href="profile.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Войти</span></a>';
+  }
+})();
+</script>
+<script>
+(function(){
+  document.addEventListener("click", function(e) {
+    var a = e.target.closest("a");
+    if (!a) return;
+    var href = a.getAttribute("href");
+    if (!href || href.startsWith("#") || href.startsWith("http") || href.startsWith("mailto") || a.target === "_blank") return;
+    e.preventDefault();
+    document.querySelector(".wrap").classList.add("page-transition-out");
+    setTimeout(function(){ window.location.href = href; }, 320);
+  });
+})();
+</script>
+</body>
+</html>
