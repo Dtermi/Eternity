@@ -5,16 +5,45 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>ETERNITY — Вики</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-<div class="stars"></div><div class="aurora"></div><div class="rays"><div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div></div><div class="orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div><div class="orb orb4"></div></div>
+<canvas id="world-bg"></canvas>
+<div id="world-overlay-elems">
+  <div class="wb-aurora wb-aur1"></div>
+  <div class="wb-aurora wb-aur2"></div>
+  <div class="wb-aurora wb-aur3"></div>
+  <div class="wb-moon"><div class="wb-moon-shd"></div></div>
+  <div id="wb-snow"></div>
+</div>
+<div class="bg-particles" id="particles"></div><style>
+#world-bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+#world-overlay-elems{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+
+/* ── BLUE NETHER THEME ── warped forest: cyan + violet glow ── */
+.wb-aurora{position:absolute;border-radius:50%;filter:blur(65px);mix-blend-mode:screen;}
+.wb-aur1{width:85%;height:45%;top:3%;left:8%;background:radial-gradient(ellipse,rgba(0,255,225,.30) 0%,rgba(0,150,220,.16) 55%,transparent 70%);animation:wbaur1 10s ease-in-out infinite alternate;}
+.wb-aur2{width:70%;height:35%;top:12%;left:18%;background:radial-gradient(ellipse,rgba(120,0,255,.22) 0%,rgba(0,140,255,.14) 55%,transparent 70%);animation:wbaur2 14s ease-in-out infinite alternate;}
+.wb-aur3{width:55%;height:28%;top:6%;left:30%;background:radial-gradient(ellipse,rgba(0,255,220,.14) 0%,transparent 60%);animation:wbaur3 8s ease-in-out infinite alternate;}
+@keyframes wbaur1{0%{transform:translateX(-6%) scaleY(.9) rotate(-3deg);opacity:.6}100%{transform:translateX(6%) scaleY(1.5) rotate(3deg);opacity:.9}}
+@keyframes wbaur2{0%{transform:translateX(9%) scaleY(.8);opacity:.45}100%{transform:translateX(-9%) scaleY(1.6);opacity:.8}}
+@keyframes wbaur3{0%{transform:scaleX(1) translateY(0);opacity:.35}100%{transform:scaleX(1.4) translateY(12%);opacity:.7}}
+
+/* soul lantern — glowing cyan core instead of moon */
+.wb-moon{position:absolute;top:12%;right:14%;width:64px;height:64px;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 40% 38%,#eafffd,#7df9ff,#1ec8e0);box-shadow:0 0 0 2px rgba(150,255,250,.12),0 0 50px rgba(0,230,255,.55),0 0 120px rgba(100,0,255,.25);animation:wbmoon 6.5s ease-in-out infinite alternate;}
+.wb-moon-shd{display:none}
+@keyframes wbmoon{0%{box-shadow:0 0 40px rgba(0,230,255,.4),0 0 90px rgba(100,0,255,.18)}100%{box-shadow:0 0 70px rgba(0,230,255,.75),0 0 150px rgba(100,0,255,.35)}}
+
+/* rising soul particles */
+.wb-sp{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(170,255,250,.95),rgba(0,220,255,.15) 70%);box-shadow:0 0 6px rgba(0,230,255,.6);animation:wbsoul linear infinite;}
+@keyframes wbsoul{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:.9}90%{opacity:.4}100%{transform:translateY(-100vh) translateX(15px);opacity:0}}
+</style>
 <div class="wrap">
 
 <nav class="nav">
   <div class="nav-inner">
-    <a class="nav-logo" href="index.html"><img src="logo.png" alt="">ETERNITY</a>
+    <a class="nav-logo" href="index.html"><img src="logo.png" alt=""><span class="nav-logo-text">ETERNITY</span></a>
     <div class="nav-links">
       <a class="nav-a" href="index.html">Главная</a>
       <a class="nav-a" href="about.html">О сервере</a>
@@ -261,6 +290,45 @@ window.addEventListener('scroll', () => {
     document.querySelector(".wrap").classList.add("page-transition-out");
     setTimeout(function(){ window.location.href = href; }, 320);
   });
+})();
+</script>
+<script>(function(){const wrap=document.getElementById("particles");if(!wrap)return;for(let i=0;i<14;i++){const p=document.createElement("div");p.className="ptcl";p.style.cssText="left:"+Math.random()*100+"vw;bottom:0;animation:floatUp "+(8+Math.random()*14)+"s "+(Math.random()*12)+"s linear infinite;width:"+(1+Math.random()*2)+"px;height:"+(1+Math.random()*2)+"px;opacity:"+(0.2+Math.random()*0.4);wrap.appendChild(p);}})();</script>
+<script>
+(function(){
+  const C=document.getElementById('world-bg');
+  const ctx=C.getContext('2d');
+  function resize(){C.width=innerWidth;C.height=innerHeight;}
+  resize(); window.addEventListener('resize',resize);
+  const stars=Array.from({length:220},()=>({
+    x:Math.random(),y:Math.random()*.85,
+    r:Math.random()*1.5+.3,
+    base:Math.random()*.5+.3,
+    phase:Math.random()*Math.PI*2,
+    sp:Math.random()*.9+.3
+  }));
+  function loop(now){
+    const t=now*.001, W=C.width, H=C.height;
+    const grd=ctx.createLinearGradient(0,0,0,H);
+    grd.addColorStop(0,'#020a0c');
+    grd.addColorStop(.5,'#031f2e');
+    grd.addColorStop(1,'#0a0a2a');
+    ctx.fillStyle=grd; ctx.fillRect(0,0,W,H);
+    stars.forEach(s=>{
+      const a=s.base+Math.sin(t*s.sp+s.phase)*.4;
+      ctx.beginPath();
+      ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(150,255,245,${Math.max(0,Math.min(1,a))})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+  // Snow
+  const sw=document.getElementById('wb-snow');
+  if(sw){for(let i=0;i<26;i++){const s=document.createElement('div');s.className='wb-sp';const sz=Math.random()*3+1.5;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${100+Math.random()*10}%;animation-duration:${Math.random()*10+8}s;animation-delay:-${Math.random()*14}s;`;sw.appendChild(s);}}
+  // Particles
+  const pw=document.getElementById('particles');
+  if(pw){for(let i=0;i<18;i++){const p=document.createElement('div');p.className='ptcl';p.style.cssText=`left:${Math.random()*100}vw;bottom:0;animation:floatUp ${8+Math.random()*14}s ${Math.random()*12}s linear infinite;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;opacity:${.3+Math.random()*.5}`;pw.appendChild(p);}}
 })();
 </script>
 </body>

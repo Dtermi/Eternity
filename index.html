@@ -5,16 +5,265 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>ETERNITY — Главная</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css"/>
+<style>
+.hero-season-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:20px;border:1px solid rgba(0,255,163,.2);background:rgba(0,255,163,.05);font-size:10px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--aurora-g);margin-bottom:32px}
+.hero-season-dot{width:6px;height:6px;border-radius:50%;background:var(--aurora-g);box-shadow:0 0 8px var(--aurora-g);animation:dotPulse 2s ease-in-out infinite;flex-shrink:0}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 4px var(--aurora-g);transform:scale(1)}50%{box-shadow:0 0 12px var(--aurora-g);transform:scale(1.35)}}
+.hero-title-wrap{position:relative;margin-bottom:28px}
+.hero-title{font-size:clamp(4rem,13vw,9rem);font-weight:900;line-height:.9;letter-spacing:.12em;text-transform:uppercase;margin:0;position:relative;display:inline-block}
+.hero-title-ghost{color:transparent;-webkit-text-stroke:1px rgba(200,230,255,.1);position:absolute;inset:0;pointer-events:none;user-select:none}
+.hero-title-real{display:block;background:linear-gradient(175deg,#fff 0%,#d4ecff 20%,var(--ice) 55%,var(--glow) 80%,var(--neon) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 50px rgba(56,180,255,.5));animation:titleGlow 5s ease-in-out infinite}
+@keyframes titleGlow{0%,100%{filter:drop-shadow(0 0 40px rgba(56,180,255,.4))}50%{filter:drop-shadow(0 0 70px rgba(56,180,255,.7)) drop-shadow(0 0 120px rgba(0,229,200,.2))}}
+.pixel-decor{position:absolute;inset:0;pointer-events:none;overflow:visible}
+.px-block{position:absolute;border-radius:2px;animation:pxFloat linear infinite}
+@keyframes pxFloat{0%{opacity:0;transform:translateY(0) rotate(0deg)}15%{opacity:.7}85%{opacity:.2}100%{opacity:0;transform:translateY(-200px) rotate(25deg)}}
+.scroll-hint{display:flex;flex-direction:column;align-items:center;gap:8px;position:absolute;bottom:32px;left:50%;transform:translateX(-50%);color:var(--t4);font-size:9px;letter-spacing:.2em;text-transform:uppercase;animation:scrollBob 2.5s ease-in-out infinite;z-index:2}
+.scroll-hint-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--t4),transparent)}
+@keyframes scrollBob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+.features-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:56px 0 0}
+.feat-card{background:var(--ocean);border:1px solid var(--line);border-radius:var(--r);padding:24px 22px;position:relative;overflow:hidden;transition:.25s}
+.feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--feat-c,var(--glow)),transparent);opacity:0;transition:opacity .3s}
+.feat-card:hover{transform:translateY(-5px);border-color:var(--line2)}
+.feat-card:hover::before{opacity:1}
+.feat-card.c-aqua{--feat-c:var(--neon)}.feat-card.c-blue{--feat-c:var(--glow)}.feat-card.c-moon{--feat-c:var(--ice)}
+.feat-icon{font-size:26px;margin-bottom:12px;display:block}
+.feat-title{font-size:14.5px;font-weight:700;color:#fff;margin-bottom:6px;letter-spacing:.02em}
+.feat-desc{font-size:13px;color:var(--t2);line-height:1.7}
+.biome-strip{display:flex;gap:8px;flex-wrap:wrap;margin-top:40px;padding-top:32px;border-top:1px solid var(--line)}
+.biome-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:5px;background:var(--deep);border:1px solid var(--line);font-size:11.5px;font-weight:600;color:var(--t2);letter-spacing:.04em;transition:.18s}
+.biome-tag:hover{border-color:var(--line2);color:var(--ice)}
+.biome-dot{width:6px;height:6px;border-radius:1px;flex-shrink:0}
+@media(max-width:640px){.features-row{grid-template-columns:1fr}.biome-strip{gap:6px}}
+</style>
 </head>
 <body>
-<div class="stars"></div><div class="aurora"></div><div class="rays"><div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div></div><div class="orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div><div class="orb orb4"></div></div>
+
+<!-- ANIMATED WORLD BACKGROUND -->
+<canvas id="world-bg"></canvas>
+<div id="world-overlay-elems">
+  <!-- Aurora layers (scene 1: night) -->
+  <div class="wb-aurora wb-aur1"></div>
+  <div class="wb-aurora wb-aur2"></div>
+  <div class="wb-aurora wb-aur3"></div>
+  <!-- Moon (scene 1) -->
+  <div class="wb-moon"><div class="wb-moon-shd"></div></div>
+  <!-- Snow particles (scene 1) -->
+  <div id="wb-snow"></div>
+  <!-- Ocean rays (scene 2) -->
+  <div id="wb-rays"></div>
+  <!-- Seaweeds (scene 2) -->
+  <div id="wb-seaweed"></div>
+  <!-- Ocean checker blocks (scene 2) -->
+  <div id="wb-checkers"></div>
+  <!-- Bubbles (scene 2) -->
+  <div id="wb-bubbles"></div>
+  <!-- Fish (scene 2) -->
+  <div id="wb-fish"></div>
+  <!-- Nether columns (scene 3) -->
+  <div id="wb-ncols"></div>
+  <!-- Nether particles (scene 3) -->
+  <div id="wb-nparts"></div>
+  <!-- Portal (scene 3) -->
+  <div class="wb-portal">
+    <div class="wb-portal-frame"></div>
+    <div class="wb-portal-inner"></div>
+  </div>
+  <!-- Nether floor glow (scene 3) -->
+  <div class="wb-nether-floor"></div>
+</div>
+<!-- Scroll scene nav dots -->
+<div id="wb-nav">
+  <div class="wb-dot on" data-s="0" title="Ночь"></div>
+  <div class="wb-dot" data-s="1" title="Глубина"></div>
+  <div class="wb-dot" data-s="2" title="Незер"></div>
+</div>
+<div class="bg-particles" id="particles"></div>
+
+<style>
+/* ── WORLD BG CANVAS ── */
+#world-bg{
+  position:fixed;inset:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;
+}
+#world-overlay-elems{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  transition:opacity .8s;
+}
+
+/* NAV DOTS */
+#wb-nav{
+  position:fixed;right:18px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:10px;z-index:200;
+}
+.wb-dot{
+  width:8px;height:8px;border-radius:50%;
+  border:1.5px solid rgba(140,200,255,.4);
+  background:transparent;cursor:pointer;transition:all .35s;
+}
+.wb-dot.on{background:rgba(140,200,255,.9);box-shadow:0 0 8px rgba(100,180,255,.8);}
+
+/* ── AURORA (scene 1) ── */
+.wb-aurora{
+  position:absolute;border-radius:50%;
+  filter:blur(60px);mix-blend-mode:screen;
+  transition:opacity 1s;
+}
+.wb-aur1{
+  width:85%;height:45%;top:3%;left:8%;
+  background:radial-gradient(ellipse,rgba(0,220,130,.38) 0%,rgba(0,90,220,.22) 55%,transparent 70%);
+  animation:wbaur1 10s ease-in-out infinite alternate;
+}
+.wb-aur2{
+  width:70%;height:35%;top:12%;left:18%;
+  background:radial-gradient(ellipse,rgba(0,80,200,.3) 0%,rgba(80,0,200,.18) 55%,transparent 70%);
+  animation:wbaur2 14s ease-in-out infinite alternate;
+}
+.wb-aur3{
+  width:55%;height:28%;top:6%;left:30%;
+  background:radial-gradient(ellipse,rgba(0,230,190,.18) 0%,transparent 60%);
+  animation:wbaur3 8s ease-in-out infinite alternate;
+}
+@keyframes wbaur1{0%{transform:translateX(-6%) scaleY(.9) rotate(-3deg);opacity:.7}100%{transform:translateX(6%) scaleY(1.5) rotate(3deg);opacity:1}}
+@keyframes wbaur2{0%{transform:translateX(9%) scaleY(.8);opacity:.5}100%{transform:translateX(-9%) scaleY(1.6);opacity:.9}}
+@keyframes wbaur3{0%{transform:scaleX(1) translateY(0);opacity:.4}100%{transform:scaleX(1.4) translateY(12%);opacity:.8}}
+
+/* ── MOON (scene 1) ── */
+.wb-moon{
+  position:absolute;top:13%;right:16%;
+  width:76px;height:76px;border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 36% 36%,#ffffff,#d4eeff,#9abfdf);
+  box-shadow:0 0 0 2px rgba(200,230,255,.12),0 0 45px rgba(160,210,255,.55),0 0 110px rgba(100,180,255,.22);
+  animation:wbmoon 7s ease-in-out infinite alternate;
+  transition:opacity 1s;
+}
+.wb-moon-shd{
+  position:absolute;top:-10px;right:-16px;
+  width:76px;height:76px;border-radius:50%;
+  background:#000a14;
+}
+@keyframes wbmoon{0%{box-shadow:0 0 45px rgba(160,210,255,.45),0 0 90px rgba(100,180,255,.18)}100%{box-shadow:0 0 70px rgba(160,210,255,.75),0 0 140px rgba(100,180,255,.35)}}
+
+/* ── SNOW ── */
+.wb-sp{
+  position:absolute;border-radius:50%;background:rgba(200,230,255,.85);
+  animation:wbsnow linear infinite;transition:opacity 1s;
+}
+@keyframes wbsnow{0%{transform:translateY(-10px) translateX(0);opacity:0}10%{opacity:.9}90%{opacity:.5}100%{transform:translateY(100vh) translateX(18px);opacity:0}}
+
+/* ── OCEAN RAYS ── */
+.wb-ray{
+  position:absolute;top:0;
+  background:linear-gradient(180deg,rgba(80,190,255,.13) 0%,transparent 100%);
+  transform-origin:top center;
+  animation:wbray ease-in-out infinite alternate;transition:opacity 1s;
+}
+@keyframes wbray{0%{transform:rotate(-10deg);opacity:.5}100%{transform:rotate(10deg);opacity:.2}}
+
+/* ── SEAWEED ── */
+.wb-sw{
+  position:absolute;bottom:0;width:11px;
+  background:linear-gradient(180deg,rgba(0,130,75,.85) 0%,rgba(0,75,45,.5) 100%);
+  border-radius:5px;transform-origin:bottom center;
+  animation:wbsway ease-in-out infinite alternate;transition:opacity 1s;
+}
+@keyframes wbsway{0%{transform:rotate(-18deg)}100%{transform:rotate(18deg)}}
+
+/* ── CHECKER BLOCKS ── */
+.wb-cb{
+  position:absolute;border:1px solid rgba(0,70,110,.45);
+  animation:wbcb ease-in-out infinite alternate;transition:opacity 1s;
+}
+@keyframes wbcb{0%{transform:translateY(0) rotate(0deg)}100%{transform:translateY(-12px) rotate(3deg)}}
+
+/* ── BUBBLES ── */
+.wb-bb{
+  position:absolute;border-radius:50%;border:1px solid rgba(80,180,255,.45);
+  animation:wbbb linear infinite;transition:opacity 1s;
+}
+@keyframes wbbb{0%{transform:translateY(0);opacity:.7}50%{transform:translateY(-45vh) translateX(8px);opacity:.4}100%{transform:translateY(-90vh) translateX(-5px);opacity:0}}
+
+/* ── FISH ── */
+.wb-fish{
+  position:absolute;
+  width:28px;height:12px;
+  background:rgba(0,70,130,.75);
+  border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  animation:wbfish linear infinite;transition:opacity 1s;
+}
+.wb-fish::after{content:'';position:absolute;right:-8px;top:1px;width:10px;height:10px;background:rgba(0,70,130,.75);clip-path:polygon(0 0,100% 50%,0 100%);}
+@keyframes wbfish{0%{transform:translateX(-60px);opacity:0}8%{opacity:.7}92%{opacity:.7}100%{transform:translateX(110vw);opacity:0}}
+
+/* ── NETHER COLUMNS ── */
+.wb-nc{
+  position:absolute;bottom:0;
+  background:linear-gradient(180deg,#0a1828 0%,#040c16 100%);
+  border:1px solid rgba(0,60,140,.4);
+  box-shadow:0 0 14px rgba(0,60,160,.35);
+  transition:opacity 1s;
+}
+
+/* ── NETHER PARTICLES ── */
+.wb-np{
+  position:absolute;border-radius:50%;
+  animation:wbnp linear infinite;transition:opacity 1s;pointer-events:none;
+}
+@keyframes wbnp{0%{transform:translateY(0);opacity:0}15%{opacity:1}85%{opacity:.5}100%{transform:translateY(-95vh) translateX(22px);opacity:0}}
+
+/* ── PORTAL ── */
+.wb-portal{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:120px;height:195px;z-index:2;
+  transition:opacity 1s;
+}
+.wb-portal-frame{
+  position:absolute;inset:0;
+  border:8px solid #1a3566;border-radius:4px;
+  box-shadow:0 0 0 2px #0d2244,0 0 35px rgba(0,80,200,.6),0 0 90px rgba(0,60,180,.3),inset 0 0 35px rgba(0,60,200,.4);
+  animation:wbpf 3s ease-in-out infinite;
+}
+@keyframes wbpf{0%,100%{box-shadow:0 0 35px rgba(0,80,200,.6),0 0 90px rgba(0,60,180,.3),inset 0 0 35px rgba(0,60,200,.4)}50%{box-shadow:0 0 70px rgba(0,130,255,.95),0 0 150px rgba(0,80,220,.55),inset 0 0 65px rgba(0,110,255,.65)}}
+.wb-portal-inner{
+  position:absolute;inset:8px;border-radius:2px;overflow:hidden;
+  background:#010a1a;
+  animation:wbpi 4s ease-in-out infinite alternate;
+}
+@keyframes wbpi{0%{background:linear-gradient(135deg,#010a1a 0%,#0a2060 50%,#010a1a 100%)}100%{background:linear-gradient(135deg,#061530 0%,#122f80 50%,#061530 100%)}}
+
+/* ── NETHER FLOOR ── */
+.wb-nether-floor{
+  position:absolute;bottom:0;left:0;right:0;height:58px;
+  background:linear-gradient(180deg,rgba(0,55,130,.65) 0%,rgba(0,28,70,.92) 100%);
+  animation:wbnf 4s ease-in-out infinite alternate;transition:opacity 1s;
+}
+@keyframes wbnf{0%{box-shadow:inset 0 6px 22px rgba(0,80,200,.3)}100%{box-shadow:inset 0 6px 55px rgba(0,150,255,.65)}}
+
+/* ── OCEAN SURFACE SHIMMER ── */
+.wb-ocean-surface{
+  position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,transparent,rgba(100,220,255,.6),transparent);
+  animation:wbsurf 3.5s ease-in-out infinite;transition:opacity 1s;
+}
+@keyframes wbsurf{0%,100%{opacity:.4}50%{opacity:.9}}
+.wb-sun-glow{
+  position:absolute;top:4%;left:37%;
+  width:150px;height:150px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,220,.92) 0%,rgba(200,240,255,.5) 30%,transparent 65%);
+  animation:wbsun 5s ease-in-out infinite;transition:opacity 1s;
+}
+@keyframes wbsun{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.09);opacity:1}}
+</style>
+
 <div class="wrap">
 
 <nav class="nav">
   <div class="nav-inner">
-    <a class="nav-logo" href="index.html"><img src="logo.png" alt="">ETERNITY</a>
+    <a class="nav-logo" href="index.html">
+      <img src="logo.png" alt="">
+      <span class="nav-logo-text">ETERNITY</span>
+    </a>
     <div class="nav-links">
       <a class="nav-a on" href="index.html">Главная</a>
       <a class="nav-a" href="about.html">О сервере</a>
@@ -27,68 +276,122 @@
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="site-hero">
   <div class="site-hero-inner">
-    <div class="hero-season">Сезон открыт</div>
-    <h1>ETERNITY</h1>
-    <p class="hero-tagline">Minecraft Server · PvE · 1.20+</p>
-    <p class="hero-desc">Добро пожаловать — место, где строят, исследуют и общаются. Уютный приватный сервер с хорошей атмосферой и активным комьюнити.</p>
+
+    <div class="hero-season-badge">
+      <span class="hero-season-dot"></span>
+      Сезон открыт · Сервер онлайн
+    </div>
+
+    <div class="hero-title-wrap">
+      <div class="hero-title">
+        <span class="hero-title-ghost" aria-hidden="true">ETERNITY</span>
+        <span class="hero-title-real">ETERNITY</span>
+      </div>
+      <div class="pixel-decor" id="pixelDecor"></div>
+    </div>
+
+    <p class="hero-tagline">
+      <span>Minecraft</span>
+      <span class="hero-dot"></span>
+      <span>PvE</span>
+      <span class="hero-dot"></span>
+      <span>Java 1.20+</span>
+      <span class="hero-dot"></span>
+      <span>Приватный</span>
+    </p>
+
+    <p class="hero-desc">Место, где строят, исследуют и общаются. Уютный приватный сервер с хорошей атмосферой и активным комьюнити.</p>
+
     <div class="hero-cta">
-      <a class="btn-primary" href="#how-to-join">Как попасть на сервер</a>
+      <a class="btn-primary" href="#how-to-join">Как попасть →</a>
       <a class="btn-ghost" href="about.html">О сервере</a>
     </div>
-    <div class="ip-block" onclick="copyIp()" title="Нажмите, чтобы скопировать">
+
+    <div class="ip-block" onclick="copyIp()" title="Нажмите чтобы скопировать">
       <span class="ip-label">IP</span>
       <span class="ip-value" id="ip-val">ip-213-152-43-62.joinserver.xyz:25952</span>
-      <span class="ip-copy" id="ip-copy-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span class="ip-copy">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
       </span>
     </div>
+
+    <div class="features-row">
+      <div class="feat-card c-aqua">
+        <span class="feat-icon">🌊</span>
+        <div class="feat-title">PvE без гриферства</div>
+        <div class="feat-desc">Защита территорий, вайтлист, проверенное комьюнити</div>
+      </div>
+      <div class="feat-card c-blue">
+        <span class="feat-icon">⚙️</span>
+        <div class="feat-title">Кастомные плагины</div>
+        <div class="feat-desc">Новые крафты, механики и уникальные предметы</div>
+      </div>
+      <div class="feat-card c-moon">
+        <span class="feat-icon">🌙</span>
+        <div class="feat-title">Живое комьюнити</div>
+        <div class="feat-desc">Ивенты, стройки, своя вики и Telegram-канал</div>
+      </div>
+    </div>
+
+    <div class="biome-strip">
+      <div class="biome-tag"><span class="biome-dot" style="background:#4ade80"></span>Луга</div>
+      <div class="biome-tag"><span class="biome-dot" style="background:#60a5fa"></span>Океан</div>
+      <div class="biome-tag"><span class="biome-dot" style="background:#e2e8f0"></span>Тундра</div>
+      <div class="biome-tag"><span class="biome-dot" style="background:#c084fc"></span>Нижний мир</div>
+      <div class="biome-tag"><span class="biome-dot" style="background:#fbbf24"></span>Пустыня</div>
+      <div class="biome-tag"><span class="biome-dot" style="background:#6ee7b7"></span>Край</div>
+      <div class="biome-tag"><span class="biome-dot" style="background:#34d399"></span>Джунгли</div>
+    </div>
+
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-hint-line"></div>
+    <span>скроль</span>
   </div>
 </section>
 
-<!-- HOW TO JOIN -->
 <section class="steps-section" id="how-to-join">
   <div class="steps-inner">
-    <div class="section-label">Начало игры</div>
-    <div class="section-title">Как попасть на сервер?</div>
-    <div class="steps-list">
-      <div class="step-row">
-        <div class="step-row-num">01</div>
-        <div class="step-row-body">
-          <div class="step-row-title">Telegram-бот</div>
-          <p class="step-row-desc">Напишите нашему боту <a href="https://t.me/Eternity11q_bot" target="_blank" style="color:var(--acc4)">@Eternity11q_bot</a> и заполните анкету. После проверки вас пригласят на сервер.</p>
+    <div class="section-chip">Начало игры</div>
+    <h2 class="section-heading">Как попасть на сервер?</h2>
+    <div class="steps-track">
+      <div class="step-item">
+        <div class="step-node">01</div>
+        <div class="step-body">
+          <div class="step-title">Telegram-бот</div>
+          <p class="step-desc">Напишите нашему боту <a href="https://t.me/Eternity11q_bot" target="_blank" style="color:var(--neon)">@Eternity11q_bot</a> и заполните анкету. После проверки вас пригласят на сервер.</p>
         </div>
       </div>
-      <div class="step-row">
-        <div class="step-row-num">02</div>
-        <div class="step-row-body">
-          <div class="step-row-title">Telegram-канал</div>
-          <p class="step-row-desc">После добавления вы получите ссылку на закрытый Telegram-канал сервера.</p>
+      <div class="step-item">
+        <div class="step-node">02</div>
+        <div class="step-body">
+          <div class="step-title">Закрытый канал</div>
+          <p class="step-desc">После добавления вы получите ссылку на закрытый Telegram-канал сервера.</p>
         </div>
       </div>
-      <div class="step-row">
-        <div class="step-row-num">03</div>
-        <div class="step-row-body">
-          <div class="step-row-title">Вайтлист</div>
-          <p class="step-row-desc">В Telegram-канале напишите свой игровой ник Minecraft — администрация добавит вас в вайтлист.</p>
+      <div class="step-item">
+        <div class="step-node">03</div>
+        <div class="step-body">
+          <div class="step-title">Вайтлист</div>
+          <p class="step-desc">В Telegram-канале напишите свой игровой ник Minecraft — администрация добавит вас в вайтлист.</p>
         </div>
       </div>
-      <div class="step-row">
-        <div class="step-row-num">04</div>
-        <div class="step-row-body">
-          <div class="step-row-title">Заходите!</div>
-          <p class="step-row-desc">Открывайте Minecraft Java Edition 1.20+, добавляйте сервер по IP выше и играйте.</p>
+      <div class="step-item">
+        <div class="step-node">04</div>
+        <div class="step-body">
+          <div class="step-title">Заходите!</div>
+          <p class="step-desc">Открывайте Minecraft Java Edition 1.20+, добавляйте сервер по IP выше и играйте.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONTENT -->
 <main class="content">
-<div class="sh"><h2>Главные разделы</h2></div>
+  <div class="sh"><span>Разделы сайта</span></div>
   <div class="nav-links-list">
     <a class="nav-link-row" href="about.html">
       <div class="nlr-left">
@@ -114,7 +417,6 @@
   </div>
 </main>
 
-<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-top">
@@ -133,27 +435,338 @@
 
 </div>
 
-<div class="toast" id="toast">Скопировано!</div>
+<div class="toast" id="toast">IP скопирован!</div>
 
 <script>
+/* ═══════════════════════════════════════
+   WORLD BACKGROUND — 3 animated scenes
+   0 = Night Sky  |  1 = Deep Ocean  |  2 = Blue Nether
+   Blends between scenes based on scroll position
+   ═══════════════════════════════════════ */
+(function(){
+
+/* ── Canvas setup ── */
+const C = document.getElementById('world-bg');
+const ctx = C.getContext('2d');
+function resize(){ C.width=innerWidth; C.height=innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+/* ── Scene palettes ── */
+const SCENES = [
+  // 0: Night
+  { top:'#000408', bot:'#0d1a38' },
+  // 1: Ocean
+  { top:'#0a2a4a', bot:'#020c18' },
+  // 2: Nether
+  { top:'#010205', bot:'#020810' },
+];
+
+/* ── Stars ── */
+const stars = Array.from({length:240},()=>({
+  x:Math.random(), y:Math.random()*.82,
+  r:Math.random()*1.5+.3,
+  base:Math.random()*.5+.3,
+  phase:Math.random()*Math.PI*2,
+  sp:Math.random()*.9+.3
+}));
+
+/* ── Ocean glows ── */
+const ocGlows = Array.from({length:5},()=>({
+  x:Math.random(), y:Math.random()*.7+.1,
+  r:Math.random()*160+80,
+  ph:Math.random()*Math.PI*2, sp:Math.random()*.5+.2
+}));
+
+/* ── Nether glows ── */
+const ntGlows = Array.from({length:7},()=>({
+  x:Math.random(), y:Math.random()*.8,
+  r:Math.random()*200+100,
+  ph:Math.random()*Math.PI*2, sp:Math.random()*.4+.2
+}));
+
+/* ── DOM elements ── */
+// Snow
+const snowWrap = document.getElementById('wb-snow');
+for(let i=0;i<38;i++){
+  const s=document.createElement('div'); s.className='wb-sp';
+  const sz=Math.random()*2.5+1;
+  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:-5px;animation-duration:${Math.random()*9+7}s;animation-delay:-${Math.random()*12}s;`;
+  snowWrap.appendChild(s);
+}
+
+// Ocean rays
+const rayWrap = document.getElementById('wb-rays');
+for(let i=0;i<22;i++){
+  const r=document.createElement('div'); r.className='wb-ray';
+  const w=Math.random()*9+2;
+  r.style.cssText=`left:${Math.random()*100}%;width:${w}px;height:${50+Math.random()*30}%;animation-duration:${Math.random()*4+3}s;animation-delay:-${Math.random()*4}s;`;
+  rayWrap.appendChild(r);
+}
+
+// Add ocean surface + sun
+const oe = document.getElementById('world-overlay-elems');
+const surf = document.createElement('div'); surf.className='wb-ocean-surface'; oe.appendChild(surf);
+const sun = document.createElement('div'); sun.className='wb-sun-glow'; oe.appendChild(sun);
+
+// Seaweed
+const swWrap = document.getElementById('wb-seaweed');
+for(let i=0;i<14;i++){
+  const s=document.createElement('div'); s.className='wb-sw';
+  const h=Math.random()*95+55;
+  s.style.cssText=`left:${Math.random()*28}%;height:${h}px;animation-duration:${Math.random()*2.5+2}s;animation-delay:-${Math.random()*2.5}s;`;
+  swWrap.appendChild(s);
+}
+
+// Checker blocks
+const cbWrap = document.getElementById('wb-checkers');
+[{x:62,y:6,w:55,h:55,d:1},{x:70,y:15,w:85,h:38,d:0},{x:58,y:58,w:62,h:42,d:1},{x:57,y:70,w:44,h:44,d:0},{x:4,y:32,w:52,h:14,d:1},{x:76,y:48,w:64,h:26,d:0}].forEach(b=>{
+  const el=document.createElement('div'); el.className='wb-cb';
+  el.style.cssText=`left:${b.x}%;top:${b.y}%;width:${b.w}px;height:${b.h}px;background:${b.d?'#06121e':'#0f2a42'};animation-duration:${2+Math.random()*3}s;animation-direction:${Math.random()>.5?'alternate':'alternate-reverse'}`;
+  cbWrap.appendChild(el);
+});
+
+// Bubbles
+const bbWrap = document.getElementById('wb-bubbles');
+for(let i=0;i<24;i++){
+  const b=document.createElement('div'); b.className='wb-bb';
+  const sz=Math.random()*7+3;
+  b.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:${Math.random()*30}%;animation-duration:${Math.random()*7+5}s;animation-delay:-${Math.random()*8}s;`;
+  bbWrap.appendChild(b);
+}
+
+// Fish
+const fishWrap = document.getElementById('wb-fish');
+for(let i=0;i<5;i++){
+  const f=document.createElement('div'); f.className='wb-fish';
+  f.style.cssText=`top:${30+Math.random()*40}%;animation-duration:${Math.random()*10+13}s;animation-delay:-${Math.random()*13}s;`;
+  fishWrap.appendChild(f);
+}
+
+// Nether columns
+const ncolWrap = document.getElementById('wb-ncols');
+[{x:3,w:55,h:70},{x:11,w:28,h:105},{x:21,w:48,h:62},{x:37,w:22,h:135},{x:49,w:18,h:88},{x:59,w:38,h:78},{x:71,w:30,h:115},{x:80,w:52,h:70},{x:89,w:26,h:94}].forEach(c=>{
+  const el=document.createElement('div'); el.className='wb-nc';
+  el.style.cssText=`left:${c.x}%;width:${c.w}px;height:${c.h}px;`;
+  ncolWrap.appendChild(el);
+});
+
+// Nether particles
+const npartWrap = document.getElementById('wb-nparts');
+for(let i=0;i<65;i++){
+  const p=document.createElement('div'); p.className='wb-np';
+  const sz=Math.random()*3+1;
+  const blu=Math.random()>.5;
+  p.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:-8px;animation-duration:${Math.random()*9+6}s;animation-delay:-${Math.random()*10}s;background:rgba(${blu?'80,160,255':'45,105,225'},${Math.random()*.5+.5});`;
+  npartWrap.appendChild(p);
+}
+
+/* ── Helper: lerp color ── */
+function lerpHex(a,b,t){
+  const ah=parseInt(a.slice(1),16), bh=parseInt(b.slice(1),16);
+  const ar=(ah>>16)&255, ag=(ah>>8)&255, ab=ah&255;
+  const br=(bh>>16)&255, bg=(bh>>8)&255, bb=bh&255;
+  const r=Math.round(ar+(br-ar)*t), g=Math.round(ag+(bg-ag)*t), bl=Math.round(ab+(bb-ab)*t);
+  return `rgb(${r},${g},${bl})`;
+}
+
+/* ── Scroll → scene blend ── */
+let scene = 0; // 0..2 float
+const DOT_THRESH = 0.5;
+
+function getScene(){
+  // Map scroll progress across document to 0..2
+  const maxScroll = document.documentElement.scrollHeight - innerHeight;
+  if(maxScroll<=0) return 0;
+  // Only first ~2 screens drive the scene transition; rest stays nether
+  const rawPct = window.scrollY / Math.max(maxScroll, innerHeight*2);
+  return Math.min(2, rawPct * 3);
+}
+
+// Smooth scene value
+let targetScene = 0, smoothScene = 0;
+window.addEventListener('scroll', ()=>{ targetScene = getScene(); }, {passive:true});
+
+// Nav dots
+document.querySelectorAll('.wb-dot').forEach(d=>{
+  d.addEventListener('click',()=>{
+    const idx = +d.dataset.s;
+    const maxScroll = document.documentElement.scrollHeight - innerHeight;
+    window.scrollTo({top: (idx/2)*maxScroll, behavior:'smooth'});
+  });
+});
+
+/* ── Group visibility by scene ── */
+const SCENE_GROUPS = {
+  // [selector, show_from, show_to]  (scene range)
+  night: ['wb-aur1','wb-aur2','wb-aur3','wb-moon','wb-sp','wb-ocean-surface'],
+  ocean: ['wb-ray','wb-sw','wb-cb','wb-bb','wb-fish','wb-ocean-surface','wb-sun-glow'],
+  nether: ['wb-nc','wb-np','wb-portal','wb-portal-frame','wb-portal-inner','wb-nether-floor'],
+};
+
+function setOpacity(cls, val){
+  document.querySelectorAll('.'+cls).forEach(el=>{
+    el.style.opacity = val;
+  });
+}
+// Also handle single-instance divs
+function setOpacityId(id, val){
+  const el = document.getElementById(id);
+  if(el) el.style.opacity = val;
+}
+
+/* ── Main RAF loop ── */
+function lerp(a,b,t){ return a+(b-a)*t; }
+
+let raf_t = 0;
+function loop(now){
+  raf_t = now * .001;
+
+  // Smooth scene
+  smoothScene = lerp(smoothScene, targetScene, .06);
+
+  // Update nav dots
+  const si = Math.round(smoothScene);
+  document.querySelectorAll('.wb-dot').forEach((d,i)=>d.classList.toggle('on',i===si));
+
+  /* DRAW CANVAS BG */
+  const W=C.width, H=C.height;
+
+  // Blend between adjacent scene palettes
+  const sc = smoothScene;
+  const s0 = Math.min(1, Math.max(0, Math.floor(sc)));
+  const s1 = Math.min(2, s0+1);
+  const tf = sc - s0;
+
+  const topCol = lerpHex(SCENES[s0].top, SCENES[s1].top, tf);
+  const botCol = lerpHex(SCENES[s0].bot, SCENES[s1].bot, tf);
+
+  const grd = ctx.createLinearGradient(0,0,0,H);
+  grd.addColorStop(0, topCol);
+  grd.addColorStop(1, botCol);
+  ctx.fillStyle = grd;
+  ctx.fillRect(0,0,W,H);
+
+  /* SCENE 0 (night): stars */
+  const starAlpha = Math.max(0, 1 - sc);
+  if(starAlpha > .01){
+    stars.forEach(s=>{
+      const a = (s.base + Math.sin(raf_t*s.sp+s.phase)*.4) * starAlpha;
+      ctx.beginPath();
+      ctx.arc(s.x*W, s.y*H, s.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(200,230,255,${Math.max(0,Math.min(1,a))})`;
+      ctx.fill();
+    });
+  }
+
+  /* SCENE 1 (ocean): caustic glow + surface shimmer */
+  const ocAlpha = Math.max(0, 1 - Math.abs(sc-1));
+  if(ocAlpha > .01){
+    ocGlows.forEach(g=>{
+      const a = (.06+Math.sin(raf_t*g.sp+g.ph)*.035)*ocAlpha;
+      const rad = ctx.createRadialGradient(g.x*W,g.y*H,0,g.x*W,g.y*H,g.r);
+      rad.addColorStop(0,`rgba(0,120,210,${a})`);
+      rad.addColorStop(.5,`rgba(0,70,160,${a*.5})`);
+      rad.addColorStop(1,'transparent');
+      ctx.fillStyle=rad; ctx.fillRect(0,0,W,H);
+    });
+  }
+
+  /* SCENE 2 (nether): pulsing glow orbs */
+  const ntAlpha = Math.max(0, sc-1);
+  if(ntAlpha > .01){
+    ntGlows.forEach(g=>{
+      const a = (.055+Math.sin(raf_t*g.sp+g.ph)*.035)*ntAlpha;
+      const rad = ctx.createRadialGradient(g.x*W,g.y*H,0,g.x*W,g.y*H,g.r);
+      rad.addColorStop(0,`rgba(0,85,195,${a})`);
+      rad.addColorStop(.5,`rgba(0,45,140,${a*.5})`);
+      rad.addColorStop(1,'transparent');
+      ctx.fillStyle=rad; ctx.fillRect(0,0,W,H);
+    });
+    // Streaks
+    for(let i=0;i<4;i++){
+      const x = ((raf_t*14+i*210)%(W+80))-40;
+      const a = (.025+Math.sin(raf_t*2+i)*.015)*ntAlpha;
+      ctx.fillStyle=`rgba(0,100,220,${a})`;
+      ctx.fillRect(x, H*.55, 4, H*.45);
+    }
+  }
+
+  /* DOM element visibility — fade groups by scene */
+  const nightV = Math.max(0, 1-sc);
+  const oceanV = Math.max(0, 1-Math.abs(sc-1));
+  const netherV = Math.max(0, sc-1);
+
+  // Night
+  document.querySelectorAll('.wb-aur1,.wb-aur2,.wb-aur3,.wb-moon,.wb-sp').forEach(el=>el.style.opacity=nightV);
+  // Ocean  
+  document.querySelectorAll('.wb-ray,.wb-sw,.wb-cb,.wb-bb,.wb-fish,.wb-ocean-surface,.wb-sun-glow').forEach(el=>el.style.opacity=oceanV);
+  // Nether
+  document.querySelectorAll('.wb-nc,.wb-np,.wb-nether-floor').forEach(el=>el.style.opacity=netherV);
+  const portalEl = document.querySelector('.wb-portal');
+  if(portalEl) portalEl.style.opacity = netherV;
+
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+})();
+
 function copyIp(){
   navigator.clipboard.writeText('ip-213-152-43-62.joinserver.xyz:25952').then(()=>{
     const t=document.getElementById('toast');
     t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),2000);
+    setTimeout(()=>t.classList.remove('show'),2200);
   });
 }
-</script>
-<script>
 (function(){
-  document.addEventListener("click", function(e) {
-    var a = e.target.closest("a");
-    if (!a) return;
-    var href = a.getAttribute("href");
-    if (!href || href.startsWith("#") || href.startsWith("http") || href.startsWith("mailto") || a.target === "_blank") return;
+  const wrap=document.getElementById('particles');
+  for(let i=0;i<18;i++){
+    const p=document.createElement('div');
+    p.className='ptcl';
+    p.style.cssText=`left:${Math.random()*100}vw;bottom:0;animation:floatUp ${8+Math.random()*14}s ${Math.random()*12}s linear infinite;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;opacity:${.3+Math.random()*.5}`;
+    wrap.appendChild(p);
+  }
+})();
+(function(){
+  const wrap=document.getElementById('pixelDecor');
+  const sizes=[10,14,18,12,16];
+  for(let i=0;i<12;i++){
+    const el=document.createElement('div');
+    el.className='px-block';
+    const s=sizes[i%sizes.length];
+    el.style.cssText=`width:${s}px;height:${s}px;left:${-40+Math.random()*180}%;bottom:${-10+Math.random()*50}px;background:rgba(56,180,255,${.04+Math.random()*.08});border:1px solid rgba(56,180,255,${.06+Math.random()*.1});animation-duration:${3+Math.random()*7}s;animation-delay:${Math.random()*10}s`;
+    wrap.appendChild(el);
+  }
+})();
+(function(){
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.style.transition='.45s cubic-bezier(.34,1.56,.64,1)';
+        e.target.style.transform='scale(1)';
+        e.target.style.opacity='1';
+      }
+    });
+  },{threshold:.15});
+  document.querySelectorAll('.step-node,.feat-card').forEach(el=>{
+    el.style.transform='scale(.8)';el.style.opacity='0';io.observe(el);
+  });
+  document.querySelectorAll('.biome-tag').forEach((el,i)=>{
+    el.style.cssText+=`;transform:translateY(14px);opacity:0;transition:opacity .4s ${i*.07}s,transform .4s ${i*.07}s`;
+    const ob=new IntersectionObserver(ents=>{ents.forEach(en=>{if(en.isIntersecting){el.style.transform='translateY(0)';el.style.opacity='1';ob.disconnect();}});},{threshold:.3});
+    ob.observe(el);
+  });
+})();
+(function(){
+  document.addEventListener('click',function(e){
+    const a=e.target.closest('a');
+    if(!a) return;
+    const href=a.getAttribute('href');
+    if(!href||href.startsWith('#')||href.startsWith('http')||a.target==='_blank') return;
     e.preventDefault();
-    document.querySelector(".wrap").classList.add("page-transition-out");
-    setTimeout(function(){ window.location.href = href; }, 320);
+    document.querySelector('.wrap').classList.add('page-transition-out');
+    setTimeout(()=>window.location.href=href,320);
   });
 })();
 </script>
